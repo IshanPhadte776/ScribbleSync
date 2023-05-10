@@ -1,6 +1,7 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
+import Chat from "./Chat";
 
 //Establishes a connection to the Socket.IO server running on localhost:3001.
 const socket = io.connect("http://localhost:3001");
@@ -54,6 +55,8 @@ function App() {
       <button onClick={sendMessage}> Send Message</button>
       <h1> Message:</h1>
       {messageReceived}
+
+      <Chat> </Chat>
     </div>
   );
 }
