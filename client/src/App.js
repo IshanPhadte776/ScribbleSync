@@ -1,7 +1,8 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-import Form from "./Form";
+import SignUpForm from "./Components/SignUpForm";
+import LoginForm from "./Components/LoginForm";
 
 //Establishes a connection to the Socket.IO server running on localhost:3001.
 const socket = io.connect("http://localhost:3001");
@@ -58,7 +59,9 @@ function App() {
       <h1> Message:</h1>
       {messageReceived}
 
-      <Form> </Form>
+      <SignUpForm> </SignUpForm>
+
+      <LoginForm> </LoginForm>
 
     </div>
   );

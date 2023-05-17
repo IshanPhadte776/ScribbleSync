@@ -18,7 +18,6 @@ const bodyParser = require('body-parser');
 //Import Mongoose
 const mongoose = require("mongoose");
 
-const uri = "mongodb+srv://Ishanphadte:IshWinner5678@whiteboardcluster.b3y1lmg.mongodb.net/?retryWrites=true&w=majority"
 
 
 //Inport and use the cors library for the app
