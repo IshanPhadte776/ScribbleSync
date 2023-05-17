@@ -1,7 +1,7 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-import Chat from "./Chat";
+import Form from "./Form";
 
 //Establishes a connection to the Socket.IO server running on localhost:3001.
 const socket = io.connect("http://localhost:3001");
@@ -36,7 +36,9 @@ function App() {
     socket.on("receive_message", (data) => {
       setMessageReceived(data.message);
     });
-  }, [socket]);
+  //}, [socket]);
+  }, []);
+
   return (
     <div className="App">
       <input
@@ -56,7 +58,8 @@ function App() {
       <h1> Message:</h1>
       {messageReceived}
 
-      <Chat> </Chat>
+      <Form> </Form>
+
     </div>
   );
 }

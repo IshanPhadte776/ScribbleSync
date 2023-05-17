@@ -1,7 +1,7 @@
 
 //Create Express Server
 const express = require("express");
-//Instance of the Express Library
+
 const app = express();
 //Instance of the http library / http server
 const http = require("http");
@@ -9,8 +9,23 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
+const router = express.Router();
+
+const bodyParser = require('body-parser');
+
+
+
+//Import Mongoose
+const mongoose = require("mongoose");
+
+const uri = "mongodb+srv://Ishanphadte:IshWinner5678@whiteboardcluster.b3y1lmg.mongodb.net/?retryWrites=true&w=majority"
+
+
 //Inport and use the cors library for the app
 app.use(cors());
+
+// Parse incoming request bodies
+app.use(express.json());
 
 //Full create the http server
 const server = http.createServer(app);
@@ -50,6 +65,62 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("receive_message", data);
 
   });
+});
+
+async function connect() {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+connect();
+
+// Define the schema for your user data
+const userSchema = new mongoose.Schema(
+  {
+  username: String,
+  email: String,
+  password: String
+  },
+
+);
+
+// Create a model for your user data based on the schema
+const User = mongoose.model('users', userSchema);
+
+// get all users from MongoDB
+app.get('/getUsers', async (req, res) => {
+  try {
+    const allUser = await User.find({});
+    res.send({ users: allUser});
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// Set up the POST route to create a new user
+//This url has to be /name and no localhost nonsense
+app.post('/addUsers', async (req, res) => {
+  try {
+    // Create a new User object with data from the request body
+    const user = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    });
+
+    // Save the new user to the database
+    await user.save();
+
+    // Send a response indicating the new user was created successfully
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (err) {
+    // If an error occurs, send a response with the error message
+    res.status(400).json({ message: err.message });
+  }
 });
 
 //server will listen on port 3001 (3001 is the port for the server)
