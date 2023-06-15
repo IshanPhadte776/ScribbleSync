@@ -3,9 +3,21 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import SignUpForm from "./Components/SignUpForm";
 import LoginForm from "./Components/LoginForm";
+import Container from "./Components/container/Container";
+import SignUpLogin from "./Components/signUpLoginPopup/SignUpLogin";
+import Header from "./Components/header/Header";
 
 //Establishes a connection to the Socket.IO server running on localhost:3001.
-const socket = io.connect("http://localhost:3001");
+ const socket = io.connect("http://localhost:3001");
+
+ socket.on("connect", () => {
+  console.log("Socket connection successful in app");
+});
+
+socket.on("connect_error", (error) => {
+  console.log("Socket connection failed:", error);
+});
+
 
 function App() {
   //Room State
@@ -17,6 +29,10 @@ function App() {
   const [message, setMessage] = useState("");
   //most recent message that was received
   const [messageReceived, setMessageReceived] = useState("");
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected");
+  });
 
   const joinRoom = () => {
     //if room is new
@@ -40,8 +56,12 @@ function App() {
   //}, [socket]);
   }, []);
 
+  
+
   return (
     <div className="App">
+            <Header> </Header>
+
       <input
         placeholder="Room Number..."
         onChange={(event) => {
@@ -59,9 +79,14 @@ function App() {
       <h1> Message:</h1>
       {messageReceived}
 
+
       <SignUpForm> </SignUpForm>
 
       <LoginForm> </LoginForm>
+
+      <Container> </Container>
+
+      <SignUpLogin screen="SignUp" > </SignUpLogin>
 
     </div>
   );

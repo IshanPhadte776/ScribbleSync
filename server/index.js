@@ -15,9 +15,12 @@ const bodyParser = require('body-parser');
 
 
 
+
+
 //Import Mongoose
 const mongoose = require("mongoose");
 
+const uri = "mongodb+srv://Ishanphadte:IshWinner5678@whiteboardcluster.b3y1lmg.mongodb.net/?retryWrites=true&w=majority"
 
 
 //Inport and use the cors library for the app
@@ -64,6 +67,18 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("receive_message", data);
 
   });
+
+  socket.on('canvas-data', (data)=> {
+    socket.broadcast.emit('canvas-data', data);
+    
+  })
+
+
+  socket.on('erase-board', ()=> {
+    socket.broadcast.emit('erase-board');
+    
+  })
+
 });
 
 async function connect() {
