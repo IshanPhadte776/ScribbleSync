@@ -1,59 +1,66 @@
 import React, { useState } from "react";
 import WhiteBoardPage from "../whiteBoard/WhiteBoardPage";
-//import WhiteBoardPage from "./whiteboard/WhiteBoardPage";
 
-function MySchedulePage() {
+function MySchedulePage(role) {
   const [currentPage, setCurrentPage] = useState("MySchedulePage"); // Initial page is set to 'MySchedule'
 
   const classes = [
     {
       day: "Monday",
-      startTime: "9:00 AM",
-      endTime: "10:00 AM",
+      startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
+      endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 1,
       title: "M Class",
+      roomCode: 21,
     },
     {
       day: "Tuesday",
-      startTime: "7:00 AM",
-      endTime: "9:00 AM",
+      startTime: new Date(0, 0, 0, 7, 0), // 7:00 AM
+      endTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       duration: 2,
       title: "Tu Class",
+      roomCode: 22,
     },
     {
       day: "Tuesday",
-      startTime: "9:00 AM",
-      endTime: "11:00 AM",
+      startTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
+      endTime: new Date(0, 0, 0, 13, 0), // 1:00 PM
       duration: 2,
       title: "Tu Class",
+      roomCode: 23,
     },
+    {
+      day: "Tuesday",
+      startTime: new Date(0, 0, 0, 13, 0), // 11:00 AM
+      endTime: new Date(0, 0, 0, 19, 0), // 5:00 PM
+      duration: 6,
+      title: "Tu Class",
+      roomCode: 24,
+    },
+
     {
       day: "Wednesday",
-      startTime: "8:00 AM",
-      endTime: "10:00 AM",
+      startTime: new Date(0, 0, 0, 8, 0), // 8:00 AM
+      endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 2,
       title: "We Class",
+      roomCode: 25,
     },
     {
       day: "Thursday",
-      startTime: "9:00 AM",
-      endTime: "11:00 AM",
+      startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
+      endTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
       duration: 2,
       title: "Th Class",
+      roomCode: 26,
     },
     {
       day: "Friday",
-      startTime: "5:00 PM",
-      endTime: "7:00 PM",
+      startTime: new Date(0, 0, 0, 17, 0), // 5:00 PM
+      endTime: new Date(0, 0, 0, 19, 0), // 7:00 PM
       duration: 2,
       title: "Fr Class",
-    },
-    {
-      day: "Tuesday",
-      startTime: "12:00 AM",
-      endTime: "2:00 AM",
-      duration: 2,
-      title: "Fr Class",
+      roomCode: 27,
     },
   ];
 
@@ -86,11 +93,10 @@ function MySchedulePage() {
 
   const handleJoinClass = (classItem) => {
     // Handle joining the class
-    console.log(`Joining ${classItem.title}`);
-    setCurrentPage("WhiteBoardPage")
+    console.log(`Joining ${classItem.roomCode}`);
+    setCurrentPage("WhiteBoardPage");
   };
 
-  // Get the current time and day of the week
   const currentDate = new Date();
   const currentTime = currentDate.toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -100,18 +106,26 @@ function MySchedulePage() {
     weekday: "long",
   });
 
+
   // Find the currently occurring class
   const currentClass = classes.find(
     (classItem) =>
       classItem.day === currentDay &&
-      classItem.startTime <= currentTime &&
-      classItem.endTime >= currentTime
+      classItem.startTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      }) <= currentTime &&
+      classItem.endTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      }) >= currentTime
   );
+  
 
   return (
     <div>
       {currentPage === "WhiteBoardPage" ? (
-        <WhiteBoardPage />
+        <WhiteBoardPage role={role} name = {"Ishan Phadte"} roomCode={currentClass.roomCode}/>
       ) : (
         <div>
           <h1 className="text-2xl font-bold mb-4">My Schedule</h1>
@@ -130,7 +144,13 @@ function MySchedulePage() {
             ))}
 
             {classes.map((classItem, index) => {
-              const rowStart = rowStartDict[classItem.startTime];
+              const rowStart =
+                rowStartDict[
+                  classItem.startTime.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })
+                ];
               const rowSpan = classItem.duration * 2;
 
               let colStart;
@@ -174,44 +194,66 @@ function MySchedulePage() {
                   <div className="class-content">
                     <div className="font-bold mb-1">{classItem.title}</div>
                     <div>
-                      Time: {classItem.startTime} - {classItem.endTime}
+                      Time:{" "}
+                      {classItem.startTime.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}{" "}
+                      -{" "}
+                      {classItem.endTime.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
                     </div>
                     <div>
                       Duration: {classItem.duration} hour
                       {classItem.duration > 1 ? "s" : ""}
                     </div>
                   </div>
+                  {classItem === currentClass && (
+                    <button
+                      className="join-class-button"
+                      onClick={() => handleJoinClass(classItem)}
+                    >
+                      Join Class
+                    </button>
+                  )}
                 </div>
               );
             })}
           </div>
           {currentClass ? (
-            <div className="current-class-info bg-gray-200 p-4 rounded-lg">
-              <h2 className="text-lg font-bold mb-2">
-                Currently occurring class:
-              </h2>
-              <div className="class-title text-xl font-bold">
-                {currentClass.title}
+            <div className="current-class-info bg-gray-200 p-4 mt-4">
+              <div className="font-bold mb-2">Currently Attending:</div>
+              <div className="font-bold">{currentClass.title}</div>
+              <div>
+                Time:{" "}
+                {currentClass.startTime.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                })}{" "}
+                -{" "}
+                {currentClass.endTime.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
               </div>
-              <div className="class-time text-gray-700">
-                Time: {currentClass.startTime} - {currentClass.endTime}
-              </div>
-              <div className="class-duration text-gray-700">
+              <div>
                 Duration: {currentClass.duration} hour
                 {currentClass.duration > 1 ? "s" : ""}
               </div>
               <button
-                className="join-class-button bg-blue-500 text-white px-4 py-2 rounded mt-4"
+                className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
                 onClick={() => handleJoinClass(currentClass)}
               >
                 Join Class
               </button>
             </div>
           ) : (
-            <div className="no-class-info bg-gray-200 p-4 rounded-lg text-gray-700">
-              No class is occurring right now.
+            <div className="no-class-info bg-gray-200 p-4 mt-4">
+              <div className="font-bold">No class at the moment.</div>
+              <div>Take a break or plan ahead!</div>
             </div>
-
           )}
         </div>
       )}

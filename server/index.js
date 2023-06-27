@@ -54,6 +54,7 @@ io.on("connection", (socket) => {
   //When this event is received, the server joins the socket to the specified room using the socket.join() method.
   socket.on("join_room", (data) => {
     //data is the num of the chat room
+
     socket.join(data);
 
   });
@@ -64,7 +65,9 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     //When this event is received, the server emits a receive_message event to all other sockets in the same room using the socket.to() method. 
     //data =  { message: 'hello', room: '25' }
-    socket.to(data.room).emit("receive_message", data);
+
+
+    socket.to(data.roomCode).emit("receive_message", data);
 
   });
 

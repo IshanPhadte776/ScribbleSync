@@ -105,7 +105,7 @@ function App() {
       {currentPage === "HomePage" && <Home/>}
       {currentPage === "AboutUsPage" && <AboutUsPage />}
       {currentPage === "RegisterPage" && <RegisterPage />}
-      {currentPage === "MySchedulePage" && <MySchedulePage />}
+      {currentPage === "MySchedulePage" && <MySchedulePage role="Teacher" />}
       {currentPage === "MyImagesPage" && <MyImagesPage />}
 
       <Chat> </Chat>

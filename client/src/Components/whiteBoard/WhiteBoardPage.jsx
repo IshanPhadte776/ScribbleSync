@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
-import Board from '../board/Board'
-import Container from '../container/Container'
+import { useEffect, useState } from "react";
+import React from "react";
+import Board from "../board/Board";
+import Container from "../container/Container";
 import io from "socket.io-client";
-
 
 const socket = io.connect("http://localhost:3001");
 
@@ -15,47 +14,45 @@ socket.on("connect_error", (error) => {
   console.log("Socket connection failed:", error);
 });
 
-function WhiteBoardPage() {
-
-    //Room State
-  //roomNum
+function WhiteBoardPage(props) {
+  const { role, name, roomCode } = props;
+  // Room State
   const [room, setRoom] = useState("");
 
   // Messages States
-  //message from input box
   const [message, setMessage] = useState("");
-  //most recent message that was received
   const [messageReceived, setMessageReceived] = useState("");
+
 
   socket.on("disconnect", () => {
     console.log("Socket disconnected");
   });
 
   const joinRoom = () => {
-    //if room is new
-    if (room !== "") {
-      //use the "join_room" event to join the room with room num
-      socket.emit("join_room", room);
+    if (roomCode !== "") {
+      socket.emit("join_room", roomCode);
     }
   };
-  //sendMessage function
+
   const sendMessage = () => {
-    //use the send_message event to send a message to a specific room
-    socket.emit("send_message", { message, room });
+    socket.emit("send_message", { message, roomCode,name });
   };
 
-  //waits for the receive_message event
+  socket.on("receive_message", (data) => {
+    setMessageReceived(data.name + ": " + data.message);
+  });
+
+
+  socket.on("start_drawing", (data) => {
+    console.log(data.username);
+  });
+
+  socket.on("stop_drawing", () => {});
+
   useEffect(() => {
-    //listens for the data variable and stores the data.message in the messsageRecieved Variable
-    socket.on("receive_message", (data) => {
-      setMessageReceived(data.message);
-    });
-    //}, [socket]);
+    // Call joinRoom once on render
+    joinRoom();
   }, []);
-
-  const handleNavigation = (page) => {
-    //setCurrentPage(page);
-  };
 
   const [color, setColor] = useState("#000000");
   const [size, setSize] = useState("5");
@@ -68,64 +65,78 @@ function WhiteBoardPage() {
     setSize(e.target.value);
   };
 
-
   return (
     <div>
-    <div>
-              <input
-        placeholder="Room Number..."
-        onChange={(event) => {
-          setRoom(event.target.value);
-        }}
-      />
-      <button onClick={joinRoom}> Join Room</button>
-      <input
-        placeholder="Message..."
-        onChange={(event) => {
-          setMessage(event.target.value);
-        }}
-      />
-      <button
-        onClick={sendMessage}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Send Message
-      </button>
+      <div className="container mx-auto">
+        <div className="board-container flex justify-center">
+          <Board color={color} size={size} name={name} />
+        </div>
 
-      <h1 className="text-3xl font-bold mt-4">Message:</h1>
+        <div className="brushsize-container">
+          Select Brush Size: &nbsp;
+          <select
+            value={size}
+            onChange={changeSize}
+            className="ml-2 border border-gray-300 rounded p-2"
+          >
+            <option>5</option>
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+            <option>25</option>
+            <option>30</option>
+          </select>
+        </div>
 
-      {messageReceived}
+        <div className="tools-section flex justify-center items-center">
+          <div className="color-picker-container">
+            Select Brush Color: &nbsp;
+            <input
+              type="color"
+              value={color}
+              onChange={changeColor}
+              className="ml-2"
+            />
+          </div>
+          {role === "Teacher" && (
+            <div>
+              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Allow Editing
+              </button>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Disable Editing
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="fixed bottom-4 right-4 w-64 h-full bg-white border border-gray-300 rounded">
+          <div className="py-2 px-4 bg-gray-200 font-bold border-b border-gray-300">
+            Chat
+          </div>
+          <div className="px-4 py-2 h-40 overflow-y-scroll">
+            <h1 className="text-3xl font-bold mt-4">Message:</h1>
+            {messageReceived}
+          </div>
+          <div className="flex flex-col items-stretch border-t border-gray-300 px-4 py-2">
+            <input
+              className="border border-gray-300 rounded p-2 mb-2"
+              placeholder="Message..."
+              onChange={(event) => {
+                setMessage(event.target.value);
+              }}
+            />
+            <button
+              className="bg-blue-500 text-white py-1 px-4 rounded"
+              onClick={sendMessage}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-     <div className="container">
-       <div className="tools-section">
-         <div className="color-picker-container">
-           Select Brush Color : &nbsp;
-           <input type="color" value={color} onChange={changeColor} />
-         </div>
-
-         <div className="brushsize-container">
-           Select Brush Size : &nbsp;
-           <select value={size} onChange={changeSize}>
-             <option> 5 </option>
-             <option> 10 </option>
-             <option> 15 </option>
-             <option> 20 </option>
-             <option> 25 </option>
-             <option> 30 </option>
-           </select>
-         </div>
-
-         <div>
-
-         </div>
-       </div>
-
-       <div className="board-container">
-         <Board color={color} size={size}></Board>
-       </div>
-     </div>
-    </div>
-  )
+  );
 }
 
-export default WhiteBoardPage
+export default WhiteBoardPage;

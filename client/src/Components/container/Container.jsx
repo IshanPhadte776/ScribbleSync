@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Board from '../board/Board';
-import './styles.css';
 
 function Container() {
   // const [color, setColor] = useState("#000000");
