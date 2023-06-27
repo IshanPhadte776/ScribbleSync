@@ -1,52 +1,65 @@
-import {React,useState} from 'react'
-import styles from './Headerstyles.css'
+import React, { useState } from "react";
+import SignUpLoginPopup from "../signUpLoginPopup/SignUpLoginPopup";
 
-function Header({ scrollToAboutMe, scrollToPaintings, scrollToInstagramFeed }) {
+function Header({ isUserLoginedIn, username,handleNavigation  }) {
+  const [isPopUpDisplayed, setDisplayPopup] = useState(false);
 
-    const [showPopup, setShowPopup] = useState(false);
-
-    const handleNewsletterClick = () => {
-      setShowPopup((prevShowPopup) => !prevShowPopup);
-    };
-  
-    const handleAboutMeClick = () => {
-      scrollToAboutMe();
-    };
-  
-    const handlePaintingsClick = () => {
-      scrollToPaintings();
-    };
-  
-    const handleInstagramFeedClick = () => {
-      scrollToInstagramFeed();
-    };
-
+  const handleLoginClick = () => {
+    setDisplayPopup(!isPopUpDisplayed);
+  };
 
   return (
-    <div className={styles.header}>
-      <div className={styles.row}>
-        <div className={styles.logoAndName}>
-          <h1 className={styles.brandName}> School-O-Board</h1>
+    <div>
+      <div className="bg-gray-200 py-4">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <h1 className="text-xl font-bold">ScribbleSync</h1>
+            </div>
+
+            {isUserLoginedIn ? (
+              <>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("HomePage")} >
+                  Home
+                </h2>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("MySchedulePage")}>
+                  My Schedule
+                </h2>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("MyImagesPage")}>
+                  My Images
+                </h2>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4">
+                  {username}
+                </h2>
+              </>
+            ) : (
+              <>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("HomePage")}>
+                  Home
+                </h2>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("AboutUsPage")}>
+                  About Us
+                </h2>
+                <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("RegisterPage")}>
+                  Register
+                </h2>
+                <h2
+                  className="text-lg cursor-pointer hover:text-blue-500 mr-4"
+                  onClick={handleLoginClick}
+                >
+                  Login
+                </h2>
+              </>
+            )}
+          </div>
         </div>
-
-        <h2 className={styles.subHeading} onClick={handleAboutMeClick}>
-          Home
-        </h2>
-        <h2 className={styles.subHeading} onClick={handlePaintingsClick}>
-          
-          About Us
-        </h2>
-        <h2 className={styles.subHeading} onClick={handleInstagramFeedClick}> Pricing </h2>
-        <h2 className={styles.subHeading} onClick={handleNewsletterClick}>
-          Login
-        </h2>
-
-        <h2 className={styles.subHeading} onClick={handleNewsletterClick}>
-          Sign Up
-        </h2>
       </div>
-    </div>
-  )
+
+      
+      {isPopUpDisplayed && (
+        <SignUpLoginPopup isPopUpDisplayed={true}></SignUpLoginPopup>
+      )}    </div>
+  );
 }
 
-export default Header
+export default Header;

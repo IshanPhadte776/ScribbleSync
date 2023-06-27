@@ -14,7 +14,7 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div className="Chat">Chat</div>
+      <div> </div>
     )
   }
 }
