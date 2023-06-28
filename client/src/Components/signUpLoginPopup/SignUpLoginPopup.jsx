@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaCheck } from "react-icons/fa";
 
 import logo from "./logo.png";
-import axios from 'axios';
+import axios from "axios";
 
 function SignUpLoginPopup() {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
   const [showPopup, setShowPopup] = useState(true);
-
   const [teachers, setTeachers] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [welcomePopup, setWelcomePopup] = useState(false);
 
-  const [loggedIn, setloggedIn] = useState(false);
-
+  const [teacherInfo, setTeacherInfo] = useState({
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    Password: "",
+    Pronouns: "",
+    NumOfStudents: "",
+    ClassName: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("http://localhost:3001/teachers");
-
-      console.log(result)
+      console.log(result);
       setTeachers(Object.values(result.data)[0]);
     };
     fetchData();
@@ -40,20 +48,26 @@ function SignUpLoginPopup() {
   };
 
   const handleSubmit = async (e) => {
-    //prevents the reload of the page
     e.preventDefault();
+
+    let loggedInTeacher = null;
 
     teachers.forEach(function (element) {
       if (element.Email === emailValue && element.Password === passwordValue) {
-        setloggedIn(true);
-      } else {
+        loggedInTeacher = element;
       }
     });
 
-    if (loggedIn) {
-      console.log(true);
+    if (loggedInTeacher) {
+      setLoggedIn(true);
+      setTeacherInfo(loggedInTeacher); // Update teacherInfo state
+      setShowPopup(false);
+      setWelcomePopup(true);
+      setTimeout(() => {
+        setWelcomePopup(false);
+      }, 3000);
     } else {
-      console.log(false);
+      setErrorMessage("Invalid email or password");
     }
   };
 
@@ -64,7 +78,10 @@ function SignUpLoginPopup() {
           <div className={styles.popUp}>
             <div className={styles.row}>
               <img className={styles.logoImage} src={logo} alt="Logo" />
-              <button className={styles.closePopup} onClick={handleClosePopup}>
+              <button
+                className={styles.closePopup}
+                onClick={handleClosePopup}
+              >
                 <FaTimes />
               </button>
             </div>
@@ -100,7 +117,18 @@ function SignUpLoginPopup() {
               <button className={styles.input} type="submit">
                 Submit
               </button>
+
+              <h2>{errorMessage}</h2>
             </form>
+          </div>
+        </div>
+      )}
+
+      {welcomePopup && (
+        <div className={styles.overlay}>
+          <div className={styles.popUp}>
+            <FaCheck className={styles.checkIcon} />
+            <h2>Welcome {teacherInfo.FirstName}</h2> {/* Use correct property name */}
           </div>
         </div>
       )}

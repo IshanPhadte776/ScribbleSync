@@ -40,13 +40,12 @@ const userSchema = new mongoose.Schema({
 
 // Define the schema for your user data
 const teacherSchema = new mongoose.Schema({
-  _id: String,
   FirstName: String,
   LastName: String,
   Email: String,
   Password: String,
   Pronouns: String,
-  NumOfStudents: int16,
+  NumOfStudents: String,
   ClassName: String,
 });
 
@@ -84,6 +83,7 @@ app.post("/users", async (req, res) => {
 app.get("/teachers", async (req, res) => {
   try {
     const allTeachers = await Teacher.find({});
+    console.log(allTeachers);
     res.send({ Teachers: allTeachers });
   } catch (error) {
     console.error(error);
