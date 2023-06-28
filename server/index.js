@@ -74,16 +74,16 @@ app.post("/saveImage", (req, res) => {
   const fileName = `canvas_${Date.now()}.png`;
   console.log("Generated file name:", fileName);
 
-  const clientFolderPath = path.join(__dirname, "client", "public");
-  const filePath = path.join(clientFolderPath, fileName);
+  const clientPublicFolderPath = path.join(__dirname, "../client/src/SavedImages");
+  const filePath = path.join(clientPublicFolderPath, fileName);
   console.log("File path:", filePath);
 
   const data = base64Data.replace(/^data:image\/\w+;base64,/, "");
   console.log("Trimmed image data:", data);
 
   // Check if the directory exists, and create it if necessary
-  if (!fs.existsSync(clientFolderPath)) {
-    fs.mkdirSync(clientFolderPath, { recursive: true });
+  if (!fs.existsSync(clientPublicFolderPath)) {
+    fs.mkdirSync(clientPublicFolderPath, { recursive: true });
   }
 
   fs.writeFile(filePath, data, "base64", (err) => {
