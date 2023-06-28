@@ -38,8 +38,23 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
+// Define the schema for your user data
+const teacherSchema = new mongoose.Schema({
+  _id: String,
+  FirstName: String,
+  LastName: String,
+  Email: String,
+  Password: String,
+  Pronouns: String,
+  NumOfStudents: int16,
+  ClassName: String,
+});
+
 // Create a model for your user data based on the schema
 const User = mongoose.model("User", userSchema);
+
+// Create a model for your user data based on the schema
+const Teacher = mongoose.model("Teacher", teacherSchema);
 
 // Route to get all users from MongoDB
 app.get("/users", async (req, res) => {
@@ -63,6 +78,31 @@ app.post("/users", async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: "Failed to create user" });
   }
+});
+
+// Route to get all teachers from MongoDB
+app.get("/teachers", async (req, res) => {
+  try {
+    const allTeachers = await Teacher.find({});
+    res.send({ Teachers: allTeachers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch teachers" });
+  }
+});
+
+// Route to create a new teacher
+app.post("/teachers", async (req, res) => {
+  try {
+    const { FirstName, LastName, Email, Password,Pronouns,NumOfStudents,ClassName } = req.body;
+    const newTeacher = new Teacher({ FirstName, LastName, Email, Password, Pronouns, NumOfStudents, ClassName });
+    await newTeacher.save();
+    res.status(201).json({ success: true, message: "User created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to create user" });
+  }
+
 });
 
 // Route to handle saving the canvas image

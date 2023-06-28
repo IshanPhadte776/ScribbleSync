@@ -72,7 +72,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header isUserLoginedIn={true} username={"ishanphadte776"} handleNavigation={handleNavigation}>
+      <Header isUserLoginedIn={false} username={"ishanphadte776"} handleNavigation={handleNavigation}>
         
       </Header>
 
@@ -105,7 +105,7 @@ function App() {
       {currentPage === "HomePage" && <Home/>}
       {currentPage === "AboutUsPage" && <AboutUsPage />}
       {currentPage === "RegisterPage" && <RegisterPage />}
-      {currentPage === "MySchedulePage" && <MySchedulePage role="Teacher" />}
+      {currentPage === "MySchedulePage" && <MySchedulePage/>}
       {currentPage === "MyImagesPage" && <MyImagesPage />}
 
       <Chat> </Chat>
