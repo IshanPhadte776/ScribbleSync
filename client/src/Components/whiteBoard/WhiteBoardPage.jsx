@@ -21,8 +21,7 @@ function WhiteBoardPage(props) {
 
   // Messages States
   const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
-
+  const [messages, setMessages] = useState([]);
 
   socket.on("disconnect", () => {
     console.log("Socket disconnected");
@@ -35,13 +34,15 @@ function WhiteBoardPage(props) {
   };
 
   const sendMessage = () => {
-    socket.emit("send_message", { message, roomCode,name });
+    const newMessage = { message, name }; // Create a new message object with the user's name
+    socket.emit("send_message", { message: newMessage, roomCode, name });
+    setMessage(""); // Clear the input field after sending the message
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
   socket.on("receive_message", (data) => {
-    setMessageReceived(data.name + ": " + data.message);
+    setMessages((prevMessages) => [...prevMessages, data.message]);
   });
-
 
   socket.on("start_drawing", (data) => {
     console.log(data.username);
@@ -115,13 +116,16 @@ function WhiteBoardPage(props) {
             Chat
           </div>
           <div className="px-4 py-2 h-40 overflow-y-scroll">
-            <h1 className="text-3xl font-bold mt-4">Message:</h1>
-            {messageReceived}
+            <h1 className="text-3xl font-bold mt-4">Messages:</h1>
+            {messages.map((msg, index) => (
+              <div key={index}>{msg.name}: {msg.message}</div>
+            ))}
           </div>
           <div className="flex flex-col items-stretch border-t border-gray-300 px-4 py-2">
             <input
               className="border border-gray-300 rounded p-2 mb-2"
               placeholder="Message..."
+              value={message}
               onChange={(event) => {
                 setMessage(event.target.value);
               }}

@@ -4,6 +4,16 @@ import WhiteBoardPage from "../whiteBoard/WhiteBoardPage";
 function MySchedulePage(role) {
   const [currentPage, setCurrentPage] = useState("MySchedulePage"); // Initial page is set to 'MySchedule'
 
+
+  const dummyClass = {
+    day: "Dummy Day",
+    startTime: new Date(),
+    endTime: new Date(),
+    duration: 1,
+    title: "Dummy Class",
+    roomCode: 43,
+  };
+
   const classes = [
     {
       day: "Monday",
@@ -32,8 +42,8 @@ function MySchedulePage(role) {
     {
       day: "Tuesday",
       startTime: new Date(0, 0, 0, 13, 0), // 11:00 AM
-      endTime: new Date(0, 0, 0, 19, 0), // 5:00 PM
-      duration: 6,
+      endTime: new Date(0, 0, 0, 23, 0), // 5:00 PM
+      duration: 10,
       title: "Tu Class",
       roomCode: 24,
     },
@@ -89,6 +99,26 @@ function MySchedulePage(role) {
     "5:30 PM": 22,
     "6:00 PM": 23,
     "6:30 PM": 24,
+    "7:00 PM": 1,
+    "7:30 PM": 2,
+    "8:00 PM": 3,
+    "8:30 PM": 4,
+    "9:00 PM": 5,
+    "9:30 PM": 6,
+    "10:00 PM": 7,
+    "10:30 PM": 8,
+    "11:00 PM": 9,
+    "11:30 PM": 10,
+    "12:00 AM": 11,
+    "1:00 AM": 13,
+    "1:30 AM": 14,
+    "2:00 AM": 15,
+    "2:30 AM": 16,
+    "3:00 AM": 17,
+    "3:30 AM": 18,
+    "4:00 AM": 19,
+    "4:30 AM": 20,
+    "5:00 AM": 21,
   };
 
   const handleJoinClass = (classItem) => {
@@ -106,7 +136,6 @@ function MySchedulePage(role) {
     weekday: "long",
   });
 
-
   // Find the currently occurring class
   const currentClass = classes.find(
     (classItem) =>
@@ -120,12 +149,17 @@ function MySchedulePage(role) {
         minute: "numeric",
       }) >= currentTime
   );
-  
 
   return (
     <div>
       {currentPage === "WhiteBoardPage" ? (
-        <WhiteBoardPage role={role} name = {"Ishan Phadte"} roomCode={currentClass.roomCode}/>
+        <WhiteBoardPage
+          role={role}
+          name={"Ishan Phadte"}
+          // roomCode={currentClass.roomCode}
+          roomCode={43}
+
+        />
       ) : (
         <div>
           <h1 className="text-2xl font-bold mb-4">My Schedule</h1>
@@ -257,6 +291,13 @@ function MySchedulePage(role) {
           )}
         </div>
       )}
+
+      <button
+        className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+        onClick={() => handleJoinClass(dummyClass)}
+      >
+        Join Class
+      </button>
     </div>
   );
 }

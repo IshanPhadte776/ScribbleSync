@@ -158,12 +158,70 @@ function Board(props) {
     socketRef.current.emit("clear-board");
   };
 
+  // Will display image below the board
+  // const handleSaveImage = () => {
+  //   const canvas = canvasRef.current;
+  //   const image = new Image();
+  //   image.src = canvas.toDataURL("image/png");
+  //   setSavedImages((prevImages) => [...prevImages, image]);
+  // };
+
   const handleSaveImage = () => {
+    console.log("Starting handleSaveImage");
+  
     const canvas = canvasRef.current;
-    const image = new Image();
-    image.src = canvas.toDataURL("image/png");
-    setSavedImages((prevImages) => [...prevImages, image]);
+    console.log("Canvas:", canvas);
+  
+    const imageData = canvas.toDataURL("image/png");
+    console.log("Image Data:", imageData);
+  
+  //This line is cool 
+    console.log("Image Data JSON:", JSON.stringify({ imageData }));
+    console.log("Sending request to server...");
+
+    fetch("http://localhost:3001/saveImage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:3000, http://localhost:3002, http://localhost:3003"
+      },
+      body: JSON.stringify({ imageData }),
+      
+    })
+      .then((response) => {
+        console.log("Received response from server");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Received data from server");
+        if (data.success) {
+          console.log("Image saved successfully");
+        } else {
+          console.error("Failed to save image");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to save image:", error);
+      });
   };
+    
+  
+
+  //Will download image
+  // const handleSaveImage = () => {
+  //   const canvas = canvasRef.current;
+
+  //   // Create a temporary link element
+  //   const link = document.createElement("a");
+  //   link.href = canvas.toDataURL("image/jpeg"); // Use 'image/png' for PNG format
+  //   link.download = "board_image.jpg"; // Specify the desired file name and extension
+
+  //   // Programmatically trigger a click event on the link element to download the image
+  //   link.click();
+  // };
 
   const handleErase = () => {
     setIsErasing(!isErasing);

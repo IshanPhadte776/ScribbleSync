@@ -13,8 +13,61 @@ const router = express.Router();
 
 const bodyParser = require('body-parser');
 
+app.use((req, res, next) => {
+  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+const fs = require("fs");
+const path = require("path");
+
+app.use(express.static("public")); // Serve static files from the "public" directory
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
+// Route to handle saving the canvas image
+app.post("/saveImage", (req, res) => {
+  console.log("Received request to save image");
+  
+  // Retrieve the base64 image data from the request body
+  const base64Data = req.body.imageData;
+  console.log("Base64 image data:", base64Data);
+
+  // Generate a unique file name for the image
+  const fileName = `canvas_${Date.now()}.png`; // Use any desired file name and extension
+  console.log("Generated file name:", fileName);
+
+  // Create the file path where the image will be saved
+  const filePath = path.join(__dirname, "public", fileName);
+  console.log("File path:", filePath);
+
+  // Remove the "data:image/png;base64," prefix from the base64 data
+  const data = base64Data.replace(/^data:image\/\w+;base64,/, "");
+  console.log("Trimmed image data:", data);
+
+  // Convert the base64 data to a Buffer
+  const buffer = Buffer.from(data, "base64");
+  console.log("Converted image data to buffer:", buffer);
+
+  // Write the Buffer to the file system
+  fs.writeFile(filePath, buffer, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ success: false, message: "Failed to save image" });
+    } else {
+      console.log("Image saved successfully");
+      res.status(200).json({ success: true, message: "Image saved successfully" });
+    }
+  });
+});
 
 
 //Import Mongoose
