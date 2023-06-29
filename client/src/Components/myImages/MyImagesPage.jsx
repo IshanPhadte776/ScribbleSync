@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import homeImage from "../../SavedImages/image1.png";
-
 
 function MyImagesPage() {
   const [dateRange, setDateRange] = useState([null, null]);
   const [subject, setSubject] = useState("");
   const [type, setType] = useState("");
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    // Fetch all images
+    fetch("http://localhost:3001/images")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.images) {
+          setImages(data.images);
+        }
+
+      })
+      .catch((error) => {
+        console.error("Failed to fetch images:", error);
+      });
+  }, []);
 
   const handleDateChange = (dates) => {
     setDateRange(dates);
@@ -39,8 +55,22 @@ function MyImagesPage() {
 
 
 
+  console.log(images)
+
+
+
+
   return (
     <div>
+      <div>
+        {/* Render the images */}
+        {images.map((image, index) => (
+          <img key={index} src={image.imageData} alt="Saved Image" />
+        ))}
+      </div>
+
+
+
       <div>
         <label>Date Range:</label>
         <DatePicker
@@ -59,20 +89,6 @@ function MyImagesPage() {
       </div>
 
       <div>
-        {/* Render the images */}
-        {Array.from({ length: 10 }, (_, index) => (
-          <img
-            key={index}
-            // src={`/SavedImages/image${index + 1}.png`}
-            src={'../../../../SavedImages/image1.png'}
-            alt="Saved Image"
-          />
-        ))}
-      </div>
-
-      <img src={homeImage} alt="Saved Image" />
-
-      <div>
         <label>Type:</label>
         <Select
           options={typeOptions}
@@ -81,7 +97,7 @@ function MyImagesPage() {
         />
       </div>
 
-      <button onClick={handleSearch}>Search</button>
+      {/* <button onClick={handleSearch}>Search</button> */}
     </div>
   );
 }

@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import SignUpLoginPopup from "../signUpLoginPopup/SignUpLoginPopup";
 
-function Header({ isUserLoginedIn, username,handleNavigation  }) {
-  const [isPopUpDisplayed, setDisplayPopup] = useState(false);
+function Header({
+  isUserLoggedIn,
+  teacherInfo,
+  studentInfo,
+  handleNavigation,
+  onLoginSuccess,
+  setIsUserLoggedIn,
+  setTeacherInfo,
+  setStudentInfo,
+  setUserType,
+}) {
+    const [isPopUpDisplayed, setDisplayPopup] = useState(false);
 
   const handleLoginClick = () => {
     setDisplayPopup(!isPopUpDisplayed);
@@ -17,7 +27,7 @@ function Header({ isUserLoginedIn, username,handleNavigation  }) {
               <h1 className="text-xl font-bold">ScribbleSync</h1>
             </div>
 
-            {isUserLoginedIn ? (
+            {isUserLoggedIn ? (
               <>
                 <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4" onClick={() => handleNavigation("HomePage")} >
                   Home
@@ -29,7 +39,7 @@ function Header({ isUserLoginedIn, username,handleNavigation  }) {
                   My Images
                 </h2>
                 <h2 className="text-lg cursor-pointer hover:text-blue-500 mr-4">
-                  {username}
+                  {teacherInfo.FirstName || studentInfo.FirstName}
                 </h2>
               </>
             ) : (
@@ -57,8 +67,18 @@ function Header({ isUserLoginedIn, username,handleNavigation  }) {
 
       
       {isPopUpDisplayed && (
-        <SignUpLoginPopup isPopUpDisplayed={true}></SignUpLoginPopup>
-      )}    </div>
+        <SignUpLoginPopup
+          isPopUpDisplayed={true}
+          onLoginSuccess={onLoginSuccess}
+          setIsUserLoggedIn={setIsUserLoggedIn}
+          teacherInfo = {teacherInfo}
+          studentInfo = {studentInfo}
+          setTeacherInfo={setTeacherInfo}
+          setStudentInfo={setStudentInfo}
+          setUserType={setUserType}
+        />
+      )}
+    </div>
   );
 }
 

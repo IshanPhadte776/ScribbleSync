@@ -24,6 +24,7 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Connect to MongoDB
 const uri = process.env.MONGODB_URI;
@@ -49,11 +50,27 @@ const teacherSchema = new mongoose.Schema({
   ClassName: String,
 });
 
+// Define a schema for the image collection
+const imageSchema = new mongoose.Schema({
+  imageData: {
+    type: String,
+    required: true,
+  },
+});
+
+
+
+
+
+
+
 // Create a model for your user data based on the schema
 const User = mongoose.model("User", userSchema);
 
 // Create a model for your user data based on the schema
 const Teacher = mongoose.model("Teacher", teacherSchema);
+// Create a model based on the schema
+const Image = mongoose.model("Image", imageSchema);
 
 // Route to get all users from MongoDB
 app.get("/users", async (req, res) => {
@@ -105,6 +122,29 @@ app.post("/teachers", async (req, res) => {
 
 });
 
+
+// Define the API endpoint for saving an image
+app.post("/saveImage2", async (req, res) => {
+  const { imageData } = req.body;
+
+  try {
+    // Create a new image document
+    const image = new Image({
+      imageData,
+    });
+
+    // Save the image in MongoDB
+    const savedImage = await image.save();
+
+    console.log("Image saved successfully:", savedImage);
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Failed to save image:", error);
+    return res.status(500).json({ success: false });
+  }
+});
+
+
 // Route to handle saving the canvas image
 app.post("/saveImage", (req, res) => {
   console.log("Received request to save image");
@@ -137,6 +177,18 @@ app.post("/saveImage", (req, res) => {
     }
   });
 });
+
+// Route to get all images from MongoDB
+app.get("/images", async (req, res) => {
+  try {
+    const allImages = await Image.find({});
+    res.send({ images: allImages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch images" });
+  }
+});
+
 
 // Socket.io connection handling
 io.on("connection", (socket) => {

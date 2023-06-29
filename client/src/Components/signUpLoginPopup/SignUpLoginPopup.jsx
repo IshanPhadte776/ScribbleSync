@@ -6,30 +6,29 @@ import { FaTimes, FaCheck } from "react-icons/fa";
 import logo from "./logo.png";
 import axios from "axios";
 
-function SignUpLoginPopup() {
+function SignUpLoginPopup({
+  isPopUpDisplayed,
+  onLoginSuccess,
+  setIsUserLoggedIn,
+  teacherInfo,
+  studentInfo,
+  setTeacherInfo,
+  setStudentInfo,
+  setUserType
+}) {
+  
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
   const [showPopup, setShowPopup] = useState(true);
   const [teachers, setTeachers] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [welcomePopup, setWelcomePopup] = useState(false);
 
-  const [teacherInfo, setTeacherInfo] = useState({
-    FirstName: "",
-    LastName: "",
-    Email: "",
-    Password: "",
-    Pronouns: "",
-    NumOfStudents: "",
-    ClassName: "",
-  });
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("http://localhost:3001/teachers");
-      console.log(result);
       setTeachers(Object.values(result.data)[0]);
     };
     fetchData();
@@ -52,6 +51,8 @@ function SignUpLoginPopup() {
 
     let loggedInTeacher = null;
 
+
+
     teachers.forEach(function (element) {
       if (element.Email === emailValue && element.Password === passwordValue) {
         loggedInTeacher = element;
@@ -59,13 +60,14 @@ function SignUpLoginPopup() {
     });
 
     if (loggedInTeacher) {
-      setLoggedIn(true);
+      setIsUserLoggedIn(true);
       setTeacherInfo(loggedInTeacher); // Update teacherInfo state
       setShowPopup(false);
       setWelcomePopup(true);
       setTimeout(() => {
         setWelcomePopup(false);
       }, 3000);
+
     } else {
       setErrorMessage("Invalid email or password");
     }

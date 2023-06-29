@@ -207,6 +207,36 @@ function Board(props) {
         console.error("Failed to save image:", error);
       });
   };
+
+
+  const handleSaveImage2 = () => {
+    const canvas = canvasRef.current;
+    const imageData = canvas.toDataURL("image/png");
+  
+    fetch("http://localhost:3001/saveImage2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageData }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log("Image saved successfully");
+        } else {
+          console.error("Failed to save image");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to save image:", error);
+      });
+  };
     
   
 
@@ -253,7 +283,7 @@ function Board(props) {
         </button>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleSaveImage}
+          onClick={handleSaveImage2}
         >
           Save Image
         </button>
