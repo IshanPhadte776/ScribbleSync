@@ -10,11 +10,14 @@ function MyImagesPage() {
 
   const [subject, setSubject] = useState("");
   const [type, setType] = useState("");
+  const [imageNameSearched, setImageNameSearched] = useState("");
 
   const [images, setImages] = useState([]);
+  const [filteredImages, setFilteredImages] = useState([]);
+
   const [uniqueSubjects, setUniqueSubjects] = useState([]);
 
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState("");
 
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
@@ -27,6 +30,7 @@ function MyImagesPage() {
       .then((data) => {
         if (data.images) {
           setImages(data.images);
+          setFilteredImages(data.images);
           setUniqueSubjects(getUniqueSubjects(data.images));
         }
       })
@@ -43,24 +47,47 @@ function MyImagesPage() {
     setEndDate(date);
   };
 
-  const handleSubjectChange = (e) => {
-    setSubject(e.target.value);
-  };
-
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
   };
 
+  const handleClearAllFilters = () => {
+    setSubject("");
+    setType("");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedSubject("");
+    setFilteredImages(images);
+  };
+
+  const handleClearStartDate = () => {
+    setStartDate(null);
+  };
+
+  const handleClearEndDate = () => {
+    setEndDate(null);
+  };
+
   const handleSearch = () => {
-    // Perform search based on the selected filters
-    console.log("Searching...");
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("Subject:", subject);
-    console.log("Type:", type);
+    // Filter images based on selected subject and type
+    let filteredImages = images;
+
+    if (selectedSubject !== "All") {
+      filteredImages = filteredImages.filter(
+        (image) => image.subject === selectedSubject
+      );
+    }
+
+    if (type !== "") {
+      filteredImages = filteredImages.filter((image) => image.type === type);
+    }
+
+    // Update the filteredImages state with the filtered images
+    setFilteredImages(filteredImages);
   };
 
   const typeOptions = [
+    { value: "", label: "All" }, // Added "All" option
     { value: "Homework", label: "Homework" },
     { value: "Notes", label: "Notes" },
     { value: "Lecture", label: "Lecture" },
@@ -70,13 +97,14 @@ function MyImagesPage() {
 
   const getUniqueSubjects = (images) => {
     const subjects = images.map((image) => image.subject);
-    return [...new Set(subjects)];
+    const uniqueSubjects = [...new Set(subjects)];
+    return ["All", ...uniqueSubjects];
   };
 
   return (
     <div>
       <div className="grid grid-cols-3 gap-4">
-        {images.map((image, index) => (
+        {filteredImages.map((image, index) => (
           <div key={index} className="border rounded p-4">
             <img src={image.imageData} alt="Saved Image" className="w-full" />
             <div>
@@ -95,11 +123,15 @@ function MyImagesPage() {
           handleStartDateChange={handleStartDateChange}
         />
 
+        <button onClick={handleClearStartDate}>Clear Start Date</button>
+
         <h3>End Date</h3>
         <CustomDatePicker
           selectedDate={endDate}
           handleEndDateChange={handleEndDateChange}
         />
+
+        <button onClick={handleClearEndDate}>Clear End Date</button>
       </div>
 
       <div className="mt-4">
@@ -115,30 +147,66 @@ function MyImagesPage() {
 
       <div className="mt-4">
         <label className="block mb-2">Image Name:</label>
-        <input type="text" className="border rounded px-4 py-2 w-full" />
+        <div className="flex">
+          <input
+            type="text"
+            className="border rounded px-4 py-2 w-full"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          />
+          <button
+            onClick={() => setSubject("")}
+            className="ml-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-    <div className="mt-4">
-      <h3>Subjects:</h3>
-      <ul>
-        {uniqueSubjects.map((subject, index) => (
-          <li
-            key={index}
-            onClick={() => handleSubjectClick(subject)}
-            className={`flex items-center ${selectedSubject === subject ? 'text-indigo-600' : ''}`}
-          >
-            <div className={`w-3 h-3 rounded-full mr-2 ${selectedSubject === subject ? 'bg-indigo-600' : 'bg-gray-300'}`} />
-            <span>{subject} ({images.filter((image) => image.subject === subject).length} entries)</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <div className="mt-4">
+        <h3>Subjects:</h3>
+        <ul>
+          {uniqueSubjects.map((subject, index) => (
+            <li
+              key={index}
+              onClick={() => handleSubjectClick(subject)}
+              className={`flex items-center ${
+                selectedSubject === subject ? "text-indigo-600" : ""
+              }`}
+            >
+              <div
+                className={`w-3 h-3 rounded-full mr-2 ${
+                  selectedSubject === subject ? "bg-indigo-600" : "bg-gray-300"
+                }`}
+              />
+              <span>
+                {subject === "All" ? (
+                  `All (${images.length} entries)`
+                ) : (
+                  <>
+                    {subject} (
+                    {images.filter((image) => image.subject === subject).length}{" "}
+                    entries)
+                  </>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <button
         onClick={handleSearch}
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Search
+      </button>
+
+      <button
+        onClick={handleClearAllFilters}
+        className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+      >
+        Clear All Filters
       </button>
     </div>
   );
