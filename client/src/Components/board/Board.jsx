@@ -14,7 +14,14 @@ function Board(props) {
   const [cursorX, setCursorX] = useState(0);
   const [cursorY, setCursorY] = useState(0);
   const [isCursorOnCanvas, setIsCursorOnCanvas] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [imageAttributes, setImageAttributes] = useState({
+    imageName: "",
+    subject: "",
+    type: "",
+  });
   const { name } = props;
+
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:3001");
@@ -158,103 +165,102 @@ function Board(props) {
     socketRef.current.emit("clear-board");
   };
 
-  // Will display image below the board
+
+
   // const handleSaveImage = () => {
   //   const canvas = canvasRef.current;
-  //   const image = new Image();
-  //   image.src = canvas.toDataURL("image/png");
-  //   setSavedImages((prevImages) => [...prevImages, image]);
+  //   const imageData = canvas.toDataURL("image/png");
+
+  //   fetch("http://localhost:3001/saveImage2", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ imageData }),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.success) {
+  //         console.log("Image saved successfully");
+  //       } else {
+  //         console.error("Failed to save image");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Failed to save image:", error);
+  //     });
   // };
 
-  const handleSaveImage = () => {
-    console.log("Starting handleSaveImage");
-  
-    const canvas = canvasRef.current;
-    console.log("Canvas:", canvas);
-  
-    const imageData = canvas.toDataURL("image/png");
-    console.log("Image Data:", imageData);
-  
-  //This line is cool 
-    console.log("Image Data JSON:", JSON.stringify({ imageData }));
-    console.log("Sending request to server...");
 
-    fetch("http://localhost:3001/saveImage", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000, http://localhost:3002, http://localhost:3003"
-      },
-      body: JSON.stringify({ imageData }),
-      
-    })
-      .then((response) => {
-        console.log("Received response from server");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Received data from server");
-        if (data.success) {
-          console.log("Image saved successfully");
-        } else {
-          console.error("Failed to save image");
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to save image:", error);
-      });
-  };
-
-
-  const handleSaveImage2 = () => {
-    const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL("image/png");
-  
-    fetch("http://localhost:3001/saveImage2", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ imageData }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log("Image saved successfully");
-        } else {
-          console.error("Failed to save image");
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to save image:", error);
-      });
-  };
-    
-  
-
-  //Will download image
-  // const handleSaveImage = () => {
-  //   const canvas = canvasRef.current;
-
-  //   // Create a temporary link element
-  //   const link = document.createElement("a");
-  //   link.href = canvas.toDataURL("image/jpeg"); // Use 'image/png' for PNG format
-  //   link.download = "board_image.jpg"; // Specify the desired file name and extension
-
-  //   // Programmatically trigger a click event on the link element to download the image
-  //   link.click();
-  // };
 
   const handleErase = () => {
     setIsErasing(!isErasing);
+  };
+
+  const handleSaveImage = () => {
+    setPopupVisible(true);
+  };
+  
+  const handlePopupSave = () => {
+    if (
+      imageAttributes.imageName.trim() !== "" &&
+      imageAttributes.subject.trim() !== "" &&
+      imageAttributes.type.trim() !== ""
+    ) {
+      const canvas = canvasRef.current;
+      const imageData = canvas.toDataURL("image/png");
+
+      fetch("http://localhost:3001/saveImage2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imageData,
+          imageName: imageAttributes.imageName,
+          subject: imageAttributes.subject,
+          type: imageAttributes.type,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            console.log("Image saved successfully");
+          } else {
+            console.error("Failed to save image");
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to save image:", error);
+        });
+
+      setPopupVisible(false);
+      setImageAttributes({
+        imageName: "",
+        subject: "",
+        type: "",
+      });
+    }
+  };
+
+
+  const handlePopupCancel = () => {
+    setPopupVisible(false);
+    setImageAttributes({
+      imageName: "",
+      subject: "",
+      type: "",
+    });
   };
 
   return (
@@ -283,7 +289,7 @@ function Board(props) {
         </button>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleSaveImage2}
+          onClick={handleSaveImage}
         >
           Save Image
         </button>
@@ -308,6 +314,52 @@ function Board(props) {
           ))}
         </div>
       </div>
+
+      {popupVisible && (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>Enter Image Details</h2>
+            <input
+              type="text"
+              placeholder="Attribute 1"
+              value={imageAttributes.imageName}
+              onChange={(e) =>
+                setImageAttributes({
+                  ...imageAttributes,
+                  imageName: e.target.value,
+                })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Attribute 2"
+              value={imageAttributes.subject}
+              onChange={(e) =>
+                setImageAttributes({
+                  ...imageAttributes,
+                  subject: e.target.value,
+                })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Attribute 3"
+              value={imageAttributes.type}
+              onChange={(e) =>
+                setImageAttributes({
+                  ...imageAttributes,
+                  type: e.target.value,
+                })
+              }
+            />
+            <div className="popup-actions">
+              <button onClick={handlePopupSave}>Save</button>
+              <button onClick={handlePopupCancel}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

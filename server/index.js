@@ -56,6 +56,19 @@ const imageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageName: {
+    type: String,
+    required: true,
+  },
+  subject: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  
 });
 
 
@@ -125,12 +138,12 @@ app.post("/teachers", async (req, res) => {
 
 // Define the API endpoint for saving an image
 app.post("/saveImage2", async (req, res) => {
-  const { imageData } = req.body;
+  const { imageData, imageName, subject, type } = req.body;
 
   try {
     // Create a new image document
     const image = new Image({
-      imageData,
+      imageData, imageName, subject, type
     });
 
     // Save the image in MongoDB
