@@ -4,7 +4,6 @@ import WhiteBoardPage from "../whiteBoard/WhiteBoardPage";
 function MySchedulePage(role) {
   const [currentPage, setCurrentPage] = useState("MySchedulePage"); // Initial page is set to 'MySchedule'
 
-
   const dummyClass = {
     day: "Dummy Day",
     startTime: new Date(),
@@ -20,7 +19,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 1,
-      title: "M Class",
+      title: "Math Class",
       roomCode: 21,
     },
     {
@@ -28,7 +27,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 7, 0), // 7:00 AM
       endTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       duration: 2,
-      title: "Tu Class",
+      title: "Science Class",
       roomCode: 22,
     },
     {
@@ -36,7 +35,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
       endTime: new Date(0, 0, 0, 13, 0), // 1:00 PM
       duration: 2,
-      title: "Tu Class",
+      title: "English Class",
       roomCode: 23,
     },
     {
@@ -44,7 +43,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 13, 0), // 11:00 AM
       endTime: new Date(0, 0, 0, 23, 0), // 5:00 PM
       duration: 10,
-      title: "Tu Class",
+      title: "History Class",
       roomCode: 24,
     },
 
@@ -53,7 +52,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 8, 0), // 8:00 AM
       endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 2,
-      title: "We Class",
+      title: "Geography Class",
       roomCode: 25,
     },
     {
@@ -61,7 +60,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       endTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
       duration: 2,
-      title: "Th Class",
+      title: "Gym Class",
       roomCode: 26,
     },
     {
@@ -69,7 +68,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 17, 0), // 5:00 PM
       endTime: new Date(0, 0, 0, 19, 0), // 7:00 PM
       duration: 2,
-      title: "Fr Class",
+      title: "English Class",
       roomCode: 27,
     },
   ];
@@ -158,106 +157,141 @@ function MySchedulePage(role) {
           name={"Ishan Phadte"}
           // roomCode={currentClass.roomCode}
           roomCode={43}
-
         />
       ) : (
         <div>
-          <h1 className="text-2xl font-bold mb-4">My Schedule</h1>
-          <div className="grid grid-cols-5 gap-4 schedule-grid">
-            {/* Add vertical lines */}
-            <div className="vertical-line" />
-            <div className="vertical-line" />
-            <div className="vertical-line" />
-            <div className="vertical-line" />
-            <div className="vertical-line" />
-            <div className="vertical-line" />
-
-            {/* Add horizontal lines */}
-            {[...Array(25)].map((_, index) => (
-              <div key={index} className="horizontal-line" />
-            ))}
-
-            {classes.map((classItem, index) => {
-              const rowStart =
-                rowStartDict[
-                  classItem.startTime.toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                  })
-                ];
-              const rowSpan = classItem.duration * 2;
-
-              let colStart;
-              switch (classItem.day) {
-                case "Monday":
-                  colStart = 1;
-                  break;
-                case "Tuesday":
-                  colStart = 2;
-                  break;
-                case "Wednesday":
-                  colStart = 3;
-                  break;
-                case "Thursday":
-                  colStart = 4;
-                  break;
-                case "Friday":
-                  colStart = 5;
-                  break;
-                default:
-                  colStart = 1;
-                  break;
-              }
-
-              const colSpan = 1;
-
-              const rowHeight = `${rowSpan * 50}px`; // Calculate the height based on rowSpan
-
-              return (
-                <div
-                  key={index}
-                  className={`class bg-blue-500 text-white p-4 rounded-lg border border-black ${
-                    classItem === currentClass ? "current-class" : ""
-                  }`}
-                  style={{
-                    gridColumn: `${colStart} / span ${colSpan}`,
-                    gridRow: `${rowStart} / span ${rowSpan}`,
-                    height: rowHeight,
-                  }}
-                >
-                  <div className="class-content">
-                    <div className="font-bold mb-1">{classItem.title}</div>
-                    <div>
-                      Time:{" "}
-                      {classItem.startTime.toLocaleTimeString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                      })}{" "}
-                      -{" "}
-                      {classItem.endTime.toLocaleTimeString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                      })}
-                    </div>
-                    <div>
-                      Duration: {classItem.duration} hour
-                      {classItem.duration > 1 ? "s" : ""}
-                    </div>
-                  </div>
-                  {classItem === currentClass && (
-                    <button
-                      className="join-class-button"
-                      onClick={() => handleJoinClass(classItem)}
-                    >
-                      Join Class
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+          <div className="flex justify-center">
+            <h1 className="text-4xl font-bold mx-6 my-6">My Schedule</h1>
           </div>
+
+          <div className="grid grid-cols-12">
+            <div className="col-span-1 mx-2">
+              <div className="grid grid-rows-48  " style={{ height: "100%" }}>
+                {[...Array(49)].map((_, index) => {
+                  let isAM =
+                    Math.floor((index + 1) / 2) + 6 + 1 < 12 ||
+                    Math.floor((index + 1) / 2) + 6 + 1 === 24;
+                  const hour = ((Math.floor((index + 1) / 2) + 6) % 12) + 1; // Convert 13 to 1, 14 to 2, etc.
+                  const minute = index % 2 === 0 ? "00" : "30";
+
+                  if (hour === 12) {
+                    // Special case for 12 PM
+                    isAM = false; // Set isAM to false for 12 PM
+                  }
+
+                  const period = isAM ? "AM" : "PM";
+                  const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+                  const timeLabel = `${formattedHour
+                    .toString()
+                    .padStart(2, "0")}:${minute} ${period}`;
+
+                  if (hour >= 19) {
+                    return null; // Stop rendering elements beyond 7 PM
+                  }
+
+                  return (
+                    <div
+                      key={index}
+                      style={{ height: "44px" }}
+                      className="flex items-center justify-center"
+                    >
+                      <div style={{ marginTop: "-44px" }}>{timeLabel} - </div>
+
+                      {/* Add the rest of your code for the line */}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="col-span-11">
+              <div className="grid grid-cols-5 gap-4 mx-4 schedule-grid border border-black">
+                {/* Add horizontal lines */}
+                {[...Array(25)].map((_, index) => (
+                  <div key={index} className="horizontal-line" />
+                ))}
+
+                {classes.map((classItem, index) => {
+                  const rowStart =
+                    rowStartDict[
+                      classItem.startTime.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                      })
+                    ];
+                  const rowSpan = classItem.duration * 2;
+
+                  let colStart;
+                  switch (classItem.day) {
+                    case "Monday":
+                      colStart = 1;
+                      break;
+                    case "Tuesday":
+                      colStart = 2;
+                      break;
+                    case "Wednesday":
+                      colStart = 3;
+                      break;
+                    case "Thursday":
+                      colStart = 4;
+                      break;
+                    case "Friday":
+                      colStart = 5;
+                      break;
+                    default:
+                      colStart = 1;
+                      break;
+                  }
+
+                  const colSpan = 1;
+
+                  const rowHeight = `${rowSpan * 40}px`; // Calculate the height based on rowSpan
+
+                  return (
+                    <div
+                      key={index}
+                      className={`class bg-customPink text-white p-2 rounded-lg mx-2  border border-black ${
+                        classItem === currentClass ? "current-class" : ""
+                      }`}
+                      style={{
+                        gridColumn: `${colStart} / span ${colSpan}`,
+                        gridRow: `${rowStart} / span ${rowSpan}`,
+                        height: rowHeight,
+                      }}
+                    >
+                      <div className="class-content flex flex-col justify-center items-center h-full">
+                        <div className="font-bold mb-1">{classItem.title}</div>
+                        <div className="text-center">
+                          Time:{" "}
+                          {classItem.startTime.toLocaleTimeString("en-US", {
+                            hour: "numeric",
+                            minute: "numeric",
+                          })}{" "}
+                          -{" "}
+                          {classItem.endTime.toLocaleTimeString("en-US", {
+                            hour: "numeric",
+                            minute: "numeric",
+                          })}
+                        </div>
+                      </div>
+
+                      {classItem === currentClass && (
+                        <button
+                          className="join-class-button"
+                          onClick={() => handleJoinClass(classItem)}
+                        >
+                          Join Class
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {currentClass ? (
-            <div className="current-class-info bg-gray-200 p-4 mt-4">
+            <div className="current-class-info bg-gray-200 p-2 mt-4">
               <div className="font-bold mb-2">Currently Attending:</div>
               <div className="font-bold">{currentClass.title}</div>
               <div>

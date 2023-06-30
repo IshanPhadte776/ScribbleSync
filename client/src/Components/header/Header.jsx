@@ -11,6 +11,7 @@ function Header({
   setTeacherInfo,
   setStudentInfo,
   setUserType,
+  setCurrentPage,
 }) {
     const [isPopUpDisplayed, setDisplayPopup] = useState(false);
 
@@ -76,6 +77,7 @@ function Header({
           setTeacherInfo={setTeacherInfo}
           setStudentInfo={setStudentInfo}
           setUserType={setUserType}
+          setCurrentPage={setCurrentPage}
         />
       )}
     </div>

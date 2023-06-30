@@ -3,13 +3,8 @@ import "./styles/tailwind.css";
 
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-// import SignUpForm from "./Components/SignUpForm";
-// import LoginForm from "./Components/LoginForm";
-import Container from "./Components/container/Container";
-import SignUpLoginPopup from "./Components/signUpLoginPopup/SignUpLoginPopup";
 import Header from "./Components/header/Header";
 import Chat from "./Components/Chat";
-import AboutUS from "./Components/aboutUs/AboutUsPage";
 import RegisterPage from "./Components/register/RegisterPage";
 import AboutUsPage from "./Components/aboutUs/AboutUsPage";
 import MySchedulePage from "./Components/mySchedule/MySchedulePage";
@@ -68,6 +63,8 @@ function App() {
         setTeacherInfo={setTeacherInfo}
         setStudentInfo={setStudentInfo}
         setUserType={setUserType}
+        setCurrentPage={setCurrentPage}
+
 
       ></Header>
 

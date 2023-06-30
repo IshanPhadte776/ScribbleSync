@@ -19,6 +19,8 @@ function MyImagesPage() {
 
   const [selectedSubject, setSelectedSubject] = useState("");
 
+  const [openedCalendar, setOpenedCalendar] = useState("None");
+
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
   };
@@ -72,7 +74,13 @@ function MyImagesPage() {
     // Filter images based on selected subject and type
     let filteredImages = images;
 
-    if (selectedSubject !== "All") {
+    console.log(imageNameSearched)
+
+    console.log(images[0].imageName)
+    console.log(images[1].imageName)
+    console.log(images[2].imageName == imageNameSearched)
+
+    if (selectedSubject !== "All" && selectedSubject !== "") {
       filteredImages = filteredImages.filter(
         (image) => image.subject === selectedSubject
       );
@@ -80,6 +88,12 @@ function MyImagesPage() {
 
     if (type !== "") {
       filteredImages = filteredImages.filter((image) => image.type === type);
+    }
+
+    if (imageNameSearched !== "") {
+      filteredImages = filteredImages.filter(
+        (image) => image.imageName === imageNameSearched
+      );
     }
 
     // Update the filteredImages state with the filtered images
@@ -102,112 +116,139 @@ function MyImagesPage() {
   };
 
   return (
-    <div>
-      <div className="grid grid-cols-3 gap-4">
-        {filteredImages.map((image, index) => (
-          <div key={index} className="border rounded p-4">
-            <img src={image.imageData} alt="Saved Image" className="w-full" />
-            <div>
-              <p className="font-semibold">Name: {image.imageName}</p>
-              <p>Subject: {image.subject}</p>
-              <p>Type: {image.type}</p>
+    <div className="grid grid-cols-4">
+      <div className="col-span-1 mx-4 my-4">
+        <div>
+          <div className="flex items-center">
+            <h3 className="text-lg font-semibold mr-2">Start Date</h3>
+
+            <button
+              onClick={handleClearStartDate}
+              className="ml-2 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+            >
+              Clear Date
+            </button>
+          </div>
+          <CustomDatePicker
+            selectedDate={startDate}
+            handleStartDateChange={handleStartDateChange}
+            thisCalender={"Start"}
+          />
+
+          <div className="flex items-center mt-4">
+          <h3 className="text-lg font-semibold ">End Date</h3>
+
+            <button
+              onClick={handleClearStartDate}
+              className="ml-2 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+            >
+              Clear Date
+            </button>
+          </div>
+
+          <CustomDatePicker
+            selectedDate={endDate}
+            handleEndDateChange={handleEndDateChange}
+            thisCalender={"End"}
+          />
+
+
+          <div className="mt-4">
+            <label className="text-lg font-semibold">Type:</label>
+            <Select
+              options={typeOptions}
+              value={typeOptions.find((option) => option.value === type)}
+              onChange={handleTypeChange}
+              className="w-full"
+              classNamePrefix="select"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="text-lg font-semibold">Image Name:</label>
+            <div className="flex">
+              <input
+                type="text"
+                className="border rounded px-4 py-2 w-full"
+                value={imageNameSearched}
+                onChange={(e) => setImageNameSearched(e.target.value)}
+              />
+              <button
+                onClick={() => setImageNameSearched("")}
+                className="ml-2 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+              >
+                Reset
+              </button>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div>
-        <h3>Start Date</h3>
-        <CustomDatePicker
-          selectedDate={startDate}
-          handleStartDateChange={handleStartDateChange}
-        />
+          <div className="mt-4">
+            <h3>Subjects:</h3>
+            <ul>
+              {uniqueSubjects.map((subject, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSubjectClick(subject)}
+                  className={`flex items-center ${
+                    selectedSubject === subject ? "text-indigo-600" : ""
+                  }`}
+                >
+                  <div
+                    className={`w-3 h-3 rounded-full mr-2 ${
+                      selectedSubject === subject
+                        ? "bg-indigo-600"
+                        : "bg-gray-300"
+                    }`}
+                  />
+                  <span>
+                    {subject === "All" ? (
+                      `All (${images.length} entries)`
+                    ) : (
+                      <>
+                        {subject} (
+                        {
+                          images.filter((image) => image.subject === subject)
+                            .length
+                        }{" "}
+                        entries)
+                      </>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <button onClick={handleClearStartDate}>Clear Start Date</button>
-
-        <h3>End Date</h3>
-        <CustomDatePicker
-          selectedDate={endDate}
-          handleEndDateChange={handleEndDateChange}
-        />
-
-        <button onClick={handleClearEndDate}>Clear End Date</button>
-      </div>
-
-      <div className="mt-4">
-        <label className="block mb-2">Type:</label>
-        <Select
-          options={typeOptions}
-          value={typeOptions.find((option) => option.value === type)}
-          onChange={handleTypeChange}
-          className="w-full"
-          classNamePrefix="select"
-        />
-      </div>
-
-      <div className="mt-4">
-        <label className="block mb-2">Image Name:</label>
-        <div className="flex">
-          <input
-            type="text"
-            className="border rounded px-4 py-2 w-full"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-          />
           <button
-            onClick={() => setSubject("")}
-            className="ml-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            onClick={handleSearch}
+            className="mt-4 mr-4 px-4 py-2 bg-customLightOrange text-white rounded hover:bg-customOrange"
           >
-            Reset
+            Search
+          </button>
+
+          <button
+            onClick={handleClearAllFilters}
+            className="mt-4 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+          >
+            Clear All Filters
           </button>
         </div>
       </div>
 
-      <div className="mt-4">
-        <h3>Subjects:</h3>
-        <ul>
-          {uniqueSubjects.map((subject, index) => (
-            <li
-              key={index}
-              onClick={() => handleSubjectClick(subject)}
-              className={`flex items-center ${
-                selectedSubject === subject ? "text-indigo-600" : ""
-              }`}
-            >
-              <div
-                className={`w-3 h-3 rounded-full mr-2 ${
-                  selectedSubject === subject ? "bg-indigo-600" : "bg-gray-300"
-                }`}
-              />
-              <span>
-                {subject === "All" ? (
-                  `All (${images.length} entries)`
-                ) : (
-                  <>
-                    {subject} (
-                    {images.filter((image) => image.subject === subject).length}{" "}
-                    entries)
-                  </>
-                )}
-              </span>
-            </li>
+      <div className="col-span-3">
+        <div className="grid grid-cols-3 gap-4">
+          {filteredImages.map((image, index) => (
+            <div key={index} className="border rounded p-4">
+              <img src={image.imageData} alt="Saved Image" className="w-full" />
+              <div>
+                <p className="font-semibold">Name: {image.imageName}</p>
+                <p>Subject: {image.subject}</p>
+                <p>Type: {image.type}</p>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
-
-      <button
-        onClick={handleSearch}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Search
-      </button>
-
-      <button
-        onClick={handleClearAllFilters}
-        className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-      >
-        Clear All Filters
-      </button>
     </div>
   );
 }

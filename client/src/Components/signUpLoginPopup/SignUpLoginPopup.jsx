@@ -14,9 +14,9 @@ function SignUpLoginPopup({
   studentInfo,
   setTeacherInfo,
   setStudentInfo,
-  setUserType
+  setUserType,
+  setCurrentPage,
 }) {
-  
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
@@ -24,7 +24,6 @@ function SignUpLoginPopup({
   const [teachers, setTeachers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [welcomePopup, setWelcomePopup] = useState(false);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +50,6 @@ function SignUpLoginPopup({
 
     let loggedInTeacher = null;
 
-
-
     teachers.forEach(function (element) {
       if (element.Email === emailValue && element.Password === passwordValue) {
         loggedInTeacher = element;
@@ -64,10 +61,10 @@ function SignUpLoginPopup({
       setTeacherInfo(loggedInTeacher); // Update teacherInfo state
       setShowPopup(false);
       setWelcomePopup(true);
+      setCurrentPage("MySchedulePage");
       setTimeout(() => {
         setWelcomePopup(false);
       }, 3000);
-
     } else {
       setErrorMessage("Invalid email or password");
     }
@@ -80,10 +77,7 @@ function SignUpLoginPopup({
           <div className={styles.popUp}>
             <div className={styles.row}>
               <img className={styles.logoImage} src={logo} alt="Logo" />
-              <button
-                className={styles.closePopup}
-                onClick={handleClosePopup}
-              >
+              <button className={styles.closePopup} onClick={handleClosePopup}>
                 <FaTimes />
               </button>
             </div>
@@ -129,8 +123,14 @@ function SignUpLoginPopup({
       {welcomePopup && (
         <div className={styles.overlay}>
           <div className={styles.popUp}>
-            <FaCheck className={styles.checkIcon} />
-            <h2>Welcome {teacherInfo.FirstName}</h2> {/* Use correct property name */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="text-6xl text-green-500">
+                <FaCheck />
+              </div>
+              <h2 className="text-2xl font-bold mb-4">
+                Welcome Back {teacherInfo.FirstName}
+              </h2>
+            </div>
           </div>
         </div>
       )}

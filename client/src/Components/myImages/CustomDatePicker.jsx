@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -6,20 +6,27 @@ function CustomDatePicker({
   selectedDate,
   handleStartDateChange,
   handleEndDateChange,
+  thisCalender,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const calendarRef = useRef(null);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleDateClick = () => {
-    setIsOpen(!isOpen);
+    if (thisCalender === "Start") {
+      setIsCalendarOpen(true);
+    } else if (thisCalender === "End") {
+      setIsCalendarOpen(true);
+    }
   };
 
   const handleDayClick = (day) => {
-    if (handleStartDateChange) {
+    if (handleStartDateChange && thisCalender === "Start") {
       handleStartDateChange(day);
-    } else if (handleEndDateChange) {
+      setIsCalendarOpen(false);
+    } else if (handleEndDateChange && thisCalender === "End") {
       handleEndDateChange(day);
+      setIsCalendarOpen(false);
     }
-    setIsOpen(false);
   };
 
   const formatDate = (date) => {
@@ -34,8 +41,25 @@ function CustomDatePicker({
     return date > today ? true : false;
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target)
+      ) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    window.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="mt-4">
+    <div className="mt-4" ref={calendarRef}>
       <div className="relative">
         <input
           type="text"
@@ -44,8 +68,8 @@ function CustomDatePicker({
           onFocus={handleDateClick}
           className="border rounded px-4 py-2 w-full cursor-pointer"
         />
-        {isOpen && (
-          <div className="absolute bg-white rounded shadow-md mt-2">
+        {isCalendarOpen && (
+          <div className="absolute bg-white rounded shadow-md mt-2 z-50">
             <Calendar
               onChange={handleDayClick}
               value={selectedDate}
