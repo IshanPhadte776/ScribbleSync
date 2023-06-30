@@ -1,13 +1,18 @@
-import React from 'react';
+import React from "react";
 
 function RegisterPage() {
   return (
-    <div className="bg-gray-100 py-16">
+    <div className="bg-customPink py-16">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+        Register
+      </h1>
       <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Register</h1>
         <form>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Email
             </label>
             <input
@@ -18,7 +23,10 @@ function RegisterPage() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Password
             </label>
             <input
@@ -29,7 +37,10 @@ function RegisterPage() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="firstName" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="firstName"
+              className="block text-gray-700 font-bold mb-2"
+            >
               First Name
             </label>
             <input
@@ -40,7 +51,10 @@ function RegisterPage() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="lastName" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="lastName"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Last Name
             </label>
             <input
@@ -51,8 +65,11 @@ function RegisterPage() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="pronouns" className="block text-gray-700 font-bold mb-2">
-              Pronouns
+            <label
+              htmlFor="pronouns"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Pronouns (Mr. Mrs. Ms.)
             </label>
             <input
               type="text"
@@ -62,9 +79,11 @@ function RegisterPage() {
             />
           </div>
 
-
           <div className="mb-4">
-            <label htmlFor="numberOfStudents" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="numberOfStudents"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Number of Students
             </label>
             <select
@@ -85,7 +104,6 @@ function RegisterPage() {
           >
             Register
           </button>
-
         </form>
       </div>
     </div>

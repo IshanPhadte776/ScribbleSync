@@ -110,7 +110,7 @@ function SignUpLoginPopup({
                 />
               </label>
 
-              <button className={styles.input} type="submit">
+              <button className={styles.submitButton} type="submit">
                 Submit
               </button>
 

@@ -38,14 +38,6 @@ function MySchedulePage(role) {
       title: "English Class",
       roomCode: 23,
     },
-    {
-      day: "Tuesday",
-      startTime: new Date(0, 0, 0, 13, 0), // 11:00 AM
-      endTime: new Date(0, 0, 0, 23, 0), // 5:00 PM
-      duration: 10,
-      title: "History Class",
-      roomCode: 24,
-    },
 
     {
       day: "Wednesday",
@@ -65,12 +57,21 @@ function MySchedulePage(role) {
     },
     {
       day: "Friday",
-      startTime: new Date(0, 0, 0, 17, 0), // 5:00 PM
-      endTime: new Date(0, 0, 0, 19, 0), // 7:00 PM
+      startTime: new Date(0, 0, 0, 13, 0), // 5:00 PM
+      endTime: new Date(0, 0, 0, 15, 0), // 7:00 PM
       duration: 2,
       title: "English Class",
       roomCode: 27,
     },
+    {
+      day: "Friday",
+      startTime: new Date(0, 0, 0, 15, 0), // 5:00 PM
+      endTime: new Date(0, 0, 0, 17, 0), // 7:00 PM
+      duration: 2,
+      title: "English Class",
+      roomCode: 27,
+    },
+
   ];
 
   const rowStartDict = {
@@ -98,26 +99,6 @@ function MySchedulePage(role) {
     "5:30 PM": 22,
     "6:00 PM": 23,
     "6:30 PM": 24,
-    "7:00 PM": 1,
-    "7:30 PM": 2,
-    "8:00 PM": 3,
-    "8:30 PM": 4,
-    "9:00 PM": 5,
-    "9:30 PM": 6,
-    "10:00 PM": 7,
-    "10:30 PM": 8,
-    "11:00 PM": 9,
-    "11:30 PM": 10,
-    "12:00 AM": 11,
-    "1:00 AM": 13,
-    "1:30 AM": 14,
-    "2:00 AM": 15,
-    "2:30 AM": 16,
-    "3:00 AM": 17,
-    "3:30 AM": 18,
-    "4:00 AM": 19,
-    "4:30 AM": 20,
-    "5:00 AM": 21,
   };
 
   const handleJoinClass = (classItem) => {
@@ -167,20 +148,13 @@ function MySchedulePage(role) {
           <div className="grid grid-cols-12">
             <div className="col-span-1 mx-2">
               <div className="grid grid-rows-48  " style={{ height: "100%" }}>
-                {[...Array(49)].map((_, index) => {
-                  let isAM =
-                    Math.floor((index + 1) / 2) + 6 + 1 < 12 ||
-                    Math.floor((index + 1) / 2) + 6 + 1 === 24;
-                  const hour = ((Math.floor((index + 1) / 2) + 6) % 12) + 1; // Convert 13 to 1, 14 to 2, etc.
+                {[...Array(25)].map((_, index) => {
+                  const hour = Math.floor(index / 2) + 7;
                   const minute = index % 2 === 0 ? "00" : "30";
 
-                  if (hour === 12) {
-                    // Special case for 12 PM
-                    isAM = false; // Set isAM to false for 12 PM
-                  }
-
-                  const period = isAM ? "AM" : "PM";
+                  const period = hour < 12 ? "AM" : "PM";
                   const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
                   const timeLabel = `${formattedHour
                     .toString()
                     .padStart(2, "0")}:${minute} ${period}`;

@@ -80,7 +80,7 @@
   }
   
   .emailForm button {
-    background-color: #13507C;
+    background-color: #F5A65B;
     color: #fff;
     cursor: pointer;
     padding: 10px;
@@ -94,7 +94,7 @@
   
   
   .emailForm button:hover {
-    background-color: #0F3D5C;
+    background-color: #FF975E;
   }
 
   .closePopup {
@@ -112,10 +112,13 @@
   
   .closePopup:hover {
     color: #0F3D5C; /* change color on hover if desired */
+    transform: rotate(90deg);
+    transition: transform 0.3s ease-in-out;
   }
 
   .logoImage {
     height: 60px;
     width: 60px;
   }
+
   

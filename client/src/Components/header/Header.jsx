@@ -13,7 +13,8 @@ function Header({
   setUserType,
   setCurrentPage,
 }) {
-    const [isPopUpDisplayed, setDisplayPopup] = useState(false);
+
+  const [isPopUpDisplayed,setDisplayPopup] = useState(false);
 
   const handleLoginClick = () => {
     setDisplayPopup(!isPopUpDisplayed);

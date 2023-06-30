@@ -64,11 +64,20 @@ function App() {
         setStudentInfo={setStudentInfo}
         setUserType={setUserType}
         setCurrentPage={setCurrentPage}
+      />
 
-
-      ></Header>
-
-      {currentPage === "HomePage" && <Home />}
+      {currentPage === "HomePage" && (
+        <Home
+          teacherInfo={teacherInfo}
+          studentInfo={studentInfo}
+          onLoginSuccess={handleLoginSuccess}
+          setIsUserLoggedIn={setIsUserLoggedIn}
+          setTeacherInfo={setTeacherInfo}
+          setStudentInfo={setStudentInfo}
+          setUserType={setUserType}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
       {currentPage === "AboutUsPage" && <AboutUsPage />}
       {currentPage === "RegisterPage" && <RegisterPage />}
       {currentPage === "MySchedulePage" && <MySchedulePage />}
