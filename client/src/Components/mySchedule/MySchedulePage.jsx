@@ -142,7 +142,7 @@ function MySchedulePage(role) {
       ) : (
         <div>
           <div className="flex justify-center">
-            <h1 className="text-4xl font-bold mx-6 my-6">My Schedule</h1>
+            <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">My Schedule</h1>
           </div>
 
           <div className="grid grid-cols-12">
