@@ -76,6 +76,7 @@ function App() {
           setStudentInfo={setStudentInfo}
           setUserType={setUserType}
           setCurrentPage={setCurrentPage}
+          isUserLoggedIn = {isUserLoggedIn}
         />
       )}
       {currentPage === "AboutUsPage" && <AboutUsPage />}

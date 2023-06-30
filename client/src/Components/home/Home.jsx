@@ -11,6 +11,7 @@ function Home({
   setStudentInfo,
   setUserType,
   setCurrentPage,
+  isUserLoggedIn,
 }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isPopupDisplayed, setPopupDisplayed] = useState(false);
@@ -36,12 +37,12 @@ function Home({
           <h1 className="text-4xl font-bold text-customRed mb-4">
             Scribble Sync
           </h1>
-          <button
+          {!isUserLoggedIn && <button
             className="bg-customLightOrange text-lg text-white py-2 px-4 rounded hover:bg-customOrange transform hover:scale-105 transition duration-300"
             onClick={handleLogin}
           >
-            Get Registered Today
-          </button>
+            Get Logged In Today
+          </button>}
         </div>
       )}
       {isPopupDisplayed && (
