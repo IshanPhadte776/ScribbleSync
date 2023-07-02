@@ -293,10 +293,10 @@ function Board(props) {
         </div>
       </div>
 
-      <div className="tools-section flex justify-center items-center">
+      <div className="tools-section flex justify-center items-center my-4 ">
         {role === "Teacher" && (
           <div>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <button className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mx-4">
               Allow Editing
             </button>
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">

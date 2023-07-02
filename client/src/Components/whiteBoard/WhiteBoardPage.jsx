@@ -102,25 +102,30 @@ function WhiteBoardPage(props) {
     setMessage(event.target.value);
   };
 
+  useEffect(() => {
+    console.log('Screen size:', window.innerWidth);
+  }, [window.innerWidth]);
+
   return (
     <div>
+      <div className="flex justify-center">
+        <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">Whiteboard</h1>
+      </div>
       <div className="w-full flex">
-        <div className="w-3/4 flex justify-center items-center">
+        <div className={`w-${displayChat ? '3/4' : 'full'} flex justify-center items-center`}>
           <div>
-            <div className="flex justify-center">
-              <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">Whiteboard</h1>
-            </div>
-
-            <Board
-              color={color}
-              size={size}
-              name={name}
-              width={600}
-              height={450}
-              role={"Teacher"}
-              changeColor={changeColor}
-              changeSize={changeSize}
-            />
+            
+              <Board
+                color={color}
+                size={size}
+                name={name}
+                width={450}
+                height={450}
+                role="Teacher"
+                changeColor={changeColor}
+                changeSize={changeSize}
+              />
+            
           </div>
         </div>
 
