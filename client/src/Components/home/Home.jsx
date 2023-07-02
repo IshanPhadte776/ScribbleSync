@@ -29,7 +29,7 @@ function Home({
       <img
         src={homeImage}
         alt="Home Image"
-        className="w-full h-auto"
+        className="w-screen h-screen"
         onLoad={handleImageLoad}
       />
       {isImageLoaded && (

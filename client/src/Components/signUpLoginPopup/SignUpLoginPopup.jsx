@@ -76,7 +76,6 @@ function SignUpLoginPopup({
         <div className={styles.overlay}>
           <div className={styles.popUp}>
             <div className={styles.row}>
-              <img className={styles.logoImage} src={logo} alt="Logo" />
               <button className={styles.closePopup} onClick={handleClosePopup}>
                 <FaTimes />
               </button>
