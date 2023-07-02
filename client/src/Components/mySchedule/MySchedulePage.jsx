@@ -146,7 +146,7 @@ function MySchedulePage(role) {
           </div>
 
           <div className="grid grid-cols-12">
-            <div className="col-span-1 mx-2">
+            <div className="col-span-2 ml-1 mr-1">
               <div className="grid grid-rows-48  " style={{ height: "100%" }}>
                 {[...Array(25)].map((_, index) => {
                   const hour = Math.floor(index / 2) + 7;
@@ -169,14 +169,19 @@ function MySchedulePage(role) {
                       style={{ height: "64px" }}
                       className="flex items-center justify-center"
                     >
-                      <div style={{ marginTop: "-64px" }}>{timeLabel} - </div>
+                      <div
+                        style={{ marginTop: "-64px" }}
+                        className="text-sm md:text-lg lg:text-2xl"
+                        >
+                        {timeLabel}-
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            <div className="col-span-11">
+            <div className="col-span-10">
               <div className="grid grid-cols-5 gap-4 mx-4 schedule-grid border border-black">
                 {/* Add horizontal lines */}
                 {[...Array(25)].map((_, index) => (
