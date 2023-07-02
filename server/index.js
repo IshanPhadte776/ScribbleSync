@@ -211,6 +211,11 @@ io.on("connection", (socket) => {
     socket.join(data);
   });
 
+  socket.on("leave_room", (roomCode) => {
+    socket.leave(roomCode);
+    console.log(`Socket ${socket.id} left room ${roomCode}`);
+  });
+
   socket.on("send_message", (data) => {
     socket.to(data.roomCode).emit("receive_message", data);
   });

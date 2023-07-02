@@ -18,10 +18,8 @@ socket.on("connect_error", (error) => {
 });
 
 function WhiteBoardPage(props) {
-  const { role, name, roomCode } = props;
+  const { role, name, roomCode, setCurrentPage } = props;
   // Room State
-  const [room, setRoom] = useState("");
-
   // Messages States
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -34,6 +32,12 @@ function WhiteBoardPage(props) {
     if (roomCode !== "") {
       socket.emit("join_room", roomCode);
     }
+  };
+
+  const handleDisconnect = () => {
+    socket.emit("leave_room", roomCode); // Send leave room event to the server
+    // You can add additional logic here, such as resetting room state or redirecting to another page
+    setCurrentPage("MySchedulePage"); // Change the current page to "MySchedulePage"
   };
 
   // const sendMessage = () => {
@@ -68,7 +72,7 @@ function WhiteBoardPage(props) {
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      const shouldDisplayChat = screenWidth >= 768;
+      const shouldDisplayChat = screenWidth >= 1024;
       setDisplayChat(shouldDisplayChat);
     };
 
@@ -85,7 +89,6 @@ function WhiteBoardPage(props) {
   const [size, setSize] = useState("5");
 
   const [displayChat, setDisplayChat] = useState(false);
-
 
   const changeColor = (e) => {
     setColor(e.target.value);
@@ -109,32 +112,40 @@ function WhiteBoardPage(props) {
           <Board color={color} size={size} name={name} />
         </div>
 
-        <div className="brushsize-container">
-          Select Brush Size: &nbsp;
-          <select
-            value={size}
-            onChange={changeSize}
-            className="ml-2 border border-gray-300 rounded p-2"
-          >
-            <option>5</option>
-            <option>10</option>
-            <option>15</option>
-            <option>20</option>
-            <option>25</option>
-            <option>30</option>
-          </select>
+        <div className="flex justify-center items-center">
+          <div className="mr-4">
+            <label htmlFor="brush-size" className="mr-2">
+              Select Brush Size:
+            </label>
+            <select
+              id="brush-size"
+              value={size}
+              onChange={changeSize}
+              className="border border-gray-300 rounded p-2"
+            >
+              <option>5</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+              <option>25</option>
+              <option>30</option>
+            </select>
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="brush-color" className="mr-2">
+              Select Brush Color:
+            </label>
+            <input
+              type="color"
+              id="brush-color"
+              value={color}
+              onChange={changeColor}
+              className="w-10 h-10"
+            />
+          </div>
         </div>
 
         <div className="tools-section flex justify-center items-center">
-          <div className="color-picker-container">
-            Select Brush Color: &nbsp;
-            <input
-              type="color"
-              value={color}
-              onChange={changeColor}
-              className="ml-2"
-            />
-          </div>
           {role === "Teacher" && (
             <div>
               <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -146,14 +157,13 @@ function WhiteBoardPage(props) {
             </div>
           )}
         </div>
-
         {displayChat && (
           <div className="fixed bottom-4 right-4 flex flex-col-reverse">
-            <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl h-full bg-white border border-gray-300 rounded my-20 flex flex-col">
+            <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white border border-gray-300 rounded my-20 flex flex-col">
               <div className="py-2 px-4 bg-gray-200 font-bold border-b border-gray-300">
                 Chat
               </div>
-              <div className="px-4 py-2 overflow-y-scroll flex-grow">
+              <div className="px-4 py-2 overflow-y-auto h-80">
                 <h1 className="text-3xl font-bold mt-4">Messages:</h1>
                 {messages.map((msg, index) => (
                   <div key={index}>
@@ -180,6 +190,15 @@ function WhiteBoardPage(props) {
             </div>
           </div>
         )}
+
+        <div className="flex justify-center my-4">
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleDisconnect}
+          >
+            Disconnect and Close
+          </button>
+        </div>
       </div>
     </div>
   );

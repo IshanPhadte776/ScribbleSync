@@ -71,7 +71,6 @@ function MySchedulePage(role) {
       title: "English Class",
       roomCode: 27,
     },
-
   ];
 
   const rowStartDict = {
@@ -138,6 +137,7 @@ function MySchedulePage(role) {
           name={"Ishan Phadte"}
           // roomCode={currentClass.roomCode}
           roomCode={43}
+          setCurrentPage={setCurrentPage}
         />
       ) : (
         <div>
@@ -295,17 +295,16 @@ function MySchedulePage(role) {
             <div className="no-class-info bg-gray-200 p-4 mt-4">
               <div className="font-bold">No class at the moment.</div>
               <div>Take a break or plan ahead!</div>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+                onClick={() => handleJoinClass(dummyClass)}
+              >
+                Join Class
+              </button>
             </div>
           )}
         </div>
       )}
-
-      <button
-        className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-        onClick={() => handleJoinClass(dummyClass)}
-      >
-        Join Class
-      </button>
     </div>
   );
 }

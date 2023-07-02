@@ -22,7 +22,6 @@ function Board(props) {
   });
   const { name } = props;
 
-
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:3001");
 
@@ -166,38 +165,6 @@ function Board(props) {
   };
 
 
-
-  // const handleSaveImage = () => {
-  //   const canvas = canvasRef.current;
-  //   const imageData = canvas.toDataURL("image/png");
-
-  //   fetch("http://localhost:3001/saveImage2", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ imageData }),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       if (data.success) {
-  //         console.log("Image saved successfully");
-  //       } else {
-  //         console.error("Failed to save image");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Failed to save image:", error);
-  //     });
-  // };
-
-
-
   const handleErase = () => {
     setIsErasing(!isErasing);
   };
@@ -205,7 +172,7 @@ function Board(props) {
   const handleSaveImage = () => {
     setPopupVisible(true);
   };
-  
+
   const handlePopupSave = () => {
     if (
       imageAttributes.imageName.trim() !== "" &&
@@ -253,7 +220,6 @@ function Board(props) {
     }
   };
 
-
   const handlePopupCancel = () => {
     setPopupVisible(false);
     setImageAttributes({
@@ -271,24 +237,23 @@ function Board(props) {
         }`}
         id="board"
         ref={canvasRef}
+        
       ></canvas>
-      {isCursorOnCanvas && ( // Display name only when the cursor is on the canvas
-        <div
-          className="cursor-indicator"
-          style={{ top: cursorY, left: cursorX }}
-        >
-          {name && <span>{name}</span>}
-        </div>
-      )}
+      <div className="cursor-indicator" style={{ top: cursorY, left: cursorX }}>
+        <span>
+          Now Editing: {isCursorOnCanvas ? (name ? name : "None") : "None"}
+        </span>
+      </div>
+
       <div className="flex justify-center mt-4 space-x-4">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded"
           onClick={handleClearBoard}
         >
           Clear Board
         </button>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded"
           onClick={handleSaveImage}
         >
           Save Image
@@ -359,9 +324,8 @@ function Board(props) {
           </div>
         </div>
       )}
-
     </div>
-  );
+  );  
 }
 
 export default Board;
