@@ -72,7 +72,7 @@ function WhiteBoardPage(props) {
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      const shouldDisplayChat = screenWidth >= 1024;
+      const shouldDisplayChat = screenWidth >= 1120;
       setDisplayChat(shouldDisplayChat);
     };
 
@@ -86,7 +86,7 @@ function WhiteBoardPage(props) {
   }, []);
 
   const [color, setColor] = useState("#000000");
-  const [size, setSize] = useState("5");
+  const [size, setSize] = useState("10");
 
   const [displayChat, setDisplayChat] = useState(false);
 
@@ -104,61 +104,28 @@ function WhiteBoardPage(props) {
 
   return (
     <div>
-      <div className="container mx-auto">
-        <div className="flex justify-center">
-          <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">Whiteboard</h1>
-        </div>
-        <div className="board-container flex justify-center">
-          <Board color={color} size={size} name={name} />
-        </div>
+      <div className="w-full flex">
+        <div className="w-3/4 flex justify-center items-center">
+          <div>
+            <div className="flex justify-center">
+              <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">Whiteboard</h1>
+            </div>
 
-        <div className="flex justify-center items-center">
-          <div className="mr-4">
-            <label htmlFor="brush-size" className="mr-2">
-              Select Brush Size:
-            </label>
-            <select
-              id="brush-size"
-              value={size}
-              onChange={changeSize}
-              className="border border-gray-300 rounded p-2"
-            >
-              <option>5</option>
-              <option>10</option>
-              <option>15</option>
-              <option>20</option>
-              <option>25</option>
-              <option>30</option>
-            </select>
-          </div>
-          <div className="flex items-center">
-            <label htmlFor="brush-color" className="mr-2">
-              Select Brush Color:
-            </label>
-            <input
-              type="color"
-              id="brush-color"
-              value={color}
-              onChange={changeColor}
-              className="w-10 h-10"
+            <Board
+              color={color}
+              size={size}
+              name={name}
+              width={600}
+              height={450}
+              role={"Teacher"}
+              changeColor={changeColor}
+              changeSize={changeSize}
             />
           </div>
         </div>
 
-        <div className="tools-section flex justify-center items-center">
-          {role === "Teacher" && (
-            <div>
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Allow Editing
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                Disable Editing
-              </button>
-            </div>
-          )}
-        </div>
         {displayChat && (
-          <div className="fixed bottom-4 right-4 flex flex-col-reverse">
+          <div className="w-1/4 fixed right-0 bottom-0 flex flex-col-reverse mr-4">
             <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white border border-gray-300 rounded my-20 flex flex-col">
               <div className="py-2 px-4 bg-gray-200 font-bold border-b border-gray-300">
                 Chat
@@ -190,15 +157,15 @@ function WhiteBoardPage(props) {
             </div>
           </div>
         )}
+      </div>
 
-        <div className="flex justify-center my-4">
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleDisconnect}
-          >
-            Disconnect and Close
-          </button>
-        </div>
+      <div className="flex justify-center my-4">
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleDisconnect}
+        >
+          Disconnect and Close
+        </button>
       </div>
     </div>
   );

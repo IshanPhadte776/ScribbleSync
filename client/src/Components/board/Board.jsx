@@ -20,7 +20,10 @@ function Board(props) {
     subject: "",
     type: "",
   });
-  const { name } = props;
+  const { name, role,size,changeColor, changeSize, color } = props;
+
+  const [canvasWidth, setCanvasWidth] = useState(props.width);
+  const [canvasHeight, setCanvasHeight] = useState(props.height);
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:3001");
@@ -47,6 +50,10 @@ function Board(props) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
+      // Update the canvas size based on props
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
       image.onload = function () {
         ctx.drawImage(image, 0, 0);
         isDrawing = false;
@@ -58,20 +65,15 @@ function Board(props) {
     drawOnCanvas();
   }, []);
 
-  useEffect(() => {
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.strokeStyle = isErasing ? "white" : props.color;
-    ctx.lineWidth = props.size;
-  }, [props.color, props.size, isErasing]);
-
   const drawOnCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
     const sketch = document.querySelector("#sketch");
     const sketch_style = getComputedStyle(sketch);
-    canvas.width = parseInt(sketch_style.getPropertyValue("width"));
-    canvas.height = parseInt(sketch_style.getPropertyValue("height"));
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 
     const mouse = { x: 0, y: 0 };
     const last_mouse = { x: 0, y: 0 };
@@ -129,6 +131,19 @@ function Board(props) {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      setCanvasWidth(window.innerWidth);
+      setCanvasHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       const base64ImageData = canvasRef.current.toDataURL("image/png");
       socketRef.current.emit("canvas-data", base64ImageData);
@@ -163,7 +178,6 @@ function Board(props) {
     setCanvasContent("");
     socketRef.current.emit("clear-board");
   };
-
 
   const handleErase = () => {
     setIsErasing(!isErasing);
@@ -230,14 +244,13 @@ function Board(props) {
   };
 
   return (
-    <div className="sketch" id="sketch">
+    <div className="sketch " id="sketch">
       <canvas
         className={`board bg-white border border-gray-300 ${
           isCursorOnCanvas ? "canvas-cursor" : ""
         }`}
         id="board"
         ref={canvasRef}
-        
       ></canvas>
       <div className="cursor-indicator" style={{ top: cursorY, left: cursorX }}>
         <span>
@@ -278,6 +291,19 @@ function Board(props) {
             />
           ))}
         </div>
+      </div>
+
+      <div className="tools-section flex justify-center items-center">
+        {role === "Teacher" && (
+          <div>
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              Allow Editing
+            </button>
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Disable Editing
+            </button>
+          </div>
+        )}
       </div>
 
       {popupVisible && (
@@ -324,8 +350,38 @@ function Board(props) {
           </div>
         </div>
       )}
+
+      <div className="flex justify-center items-center">
+        <div className="mr-4">
+          <label htmlFor="brush-size" className="mr-2">
+            Select Brush Size:
+          </label>
+          <select
+            id="brush-size"
+            value={size}
+            onChange={changeSize}
+            className="border border-gray-300 rounded p-2"
+          >
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+          </select>
+        </div>
+        <div className="flex items-center">
+          <label htmlFor="brush-color" className="mr-2">
+            Select Brush Color:
+          </label>
+          <input
+            type="color"
+            id="brush-color"
+            value={color}
+            onChange={changeColor}
+            className="w-10 h-10"
+          />
+        </div>
+      </div>
     </div>
-  );  
+  );
 }
 
 export default Board;
