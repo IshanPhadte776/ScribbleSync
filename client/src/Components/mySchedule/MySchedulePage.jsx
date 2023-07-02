@@ -19,7 +19,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 1,
-      title: "Math Class",
+      title: "Math",
       roomCode: 21,
     },
     {
@@ -27,7 +27,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 7, 0), // 7:00 AM
       endTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       duration: 2,
-      title: "Science Class",
+      title: "Science",
       roomCode: 22,
     },
     {
@@ -35,7 +35,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
       endTime: new Date(0, 0, 0, 13, 0), // 1:00 PM
       duration: 2,
-      title: "English Class",
+      title: "English",
       roomCode: 23,
     },
 
@@ -44,7 +44,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 8, 0), // 8:00 AM
       endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
       duration: 2,
-      title: "Geography Class",
+      title: "Geo",
       roomCode: 25,
     },
     {
@@ -52,7 +52,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
       endTime: new Date(0, 0, 0, 11, 0), // 11:00 AM
       duration: 2,
-      title: "Gym Class",
+      title: "Gym",
       roomCode: 26,
     },
     {
@@ -60,7 +60,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 13, 0), // 5:00 PM
       endTime: new Date(0, 0, 0, 15, 0), // 7:00 PM
       duration: 2,
-      title: "English Class",
+      title: "English",
       roomCode: 27,
     },
     {
@@ -68,7 +68,7 @@ function MySchedulePage(role) {
       startTime: new Date(0, 0, 0, 15, 0), // 5:00 PM
       endTime: new Date(0, 0, 0, 17, 0), // 7:00 PM
       duration: 2,
-      title: "English Class",
+      title: "English",
       roomCode: 27,
     },
   ];
@@ -166,12 +166,10 @@ function MySchedulePage(role) {
                   return (
                     <div
                       key={index}
-                      style={{ height: "44px" }}
+                      style={{ height: "64px" }}
                       className="flex items-center justify-center"
                     >
-                      <div style={{ marginTop: "-44px" }}>{timeLabel} - </div>
-
-                      {/* Add the rest of your code for the line */}
+                      <div style={{ marginTop: "-64px" }}>{timeLabel} - </div>
                     </div>
                   );
                 })}
@@ -219,7 +217,7 @@ function MySchedulePage(role) {
 
                   const colSpan = 1;
 
-                  const rowHeight = `${rowSpan * 40}px`; // Calculate the height based on rowSpan
+                  const rowHeight = `${rowSpan * 60}px`; // Calculate the height based on rowSpan
 
                   return (
                     <div
@@ -234,8 +232,11 @@ function MySchedulePage(role) {
                       }}
                     >
                       <div className="class-content flex flex-col justify-center items-center h-full">
-                        <div className="font-bold mb-1">{classItem.title}</div>
-                        <div className="text-center">
+                        <div className="font-bold mb-1 text-xs md:text-sm lg:text-base whitespace-normal md:whitespace-nowrap truncate md:truncate-2-lines">
+                          {classItem.title}
+                        </div>
+
+                        <div className="text-center text-xs md:text-sm lg:text-base">
                           Time:{" "}
                           {classItem.startTime.toLocaleTimeString("en-US", {
                             hour: "numeric",
