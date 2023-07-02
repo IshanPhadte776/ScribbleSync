@@ -116,17 +116,17 @@ function MyImagesPage() {
   };
 
   return (
-    <div className="grid grid-cols-4">
+    <div className="grid grid-cols-4 mt-20">
       <div className="col-span-1 mx-4 my-4">
         <div>
           <div className="flex items-center">
-            <h3 className="text-lg font-semibold mr-2">Start Date</h3>
+            <h3 className="text-lg font-semibold mr-2">Start</h3>
 
             <button
               onClick={handleClearStartDate}
-              className="ml-2 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+              className="ml-2 px-2 py-2 bg-customBrown text-white rounded hover:bg-customRed"
             >
-              Clear Date
+              Clear
             </button>
           </div>
           <CustomDatePicker
@@ -136,13 +136,13 @@ function MyImagesPage() {
           />
 
           <div className="flex items-center mt-4">
-          <h3 className="text-lg font-semibold ">End Date</h3>
+          <h3 className="text-lg font-semibold px-1">End</h3>
 
             <button
               onClick={handleClearStartDate}
-              className="ml-2 px-4 py-2 bg-customBrown text-white rounded hover:bg-customRed"
+              className="ml-2 px-1 py-2 bg-customBrown text-white rounded hover:bg-customRed"
             >
-              Clear Date
+              Clear
             </button>
           </div>
 
