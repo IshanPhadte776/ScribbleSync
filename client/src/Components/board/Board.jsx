@@ -20,7 +20,9 @@ function Board(props) {
     subject: "",
     type: "",
   });
-  const { name, role,size,changeColor, changeSize, color } = props;
+  const { name, role, size, changeColor, changeSize, color,classSubject } = props;
+
+  console.log(classSubject)
 
   const [canvasWidth, setCanvasWidth] = useState(props.width);
   const [canvasHeight, setCanvasHeight] = useState(props.height);
@@ -255,10 +257,10 @@ function Board(props) {
         ></canvas>
       </div>
 
-
-
-      
-      <div className="cursor-indicator flex justify-center" style={{ top: cursorY, left: cursorX }}>
+      <div
+        className="cursor-indicator flex justify-center"
+        style={{ top: cursorY, left: cursorX }}
+      >
         <span>
           Now Editing: {isCursorOnCanvas ? (name ? name : "None") : "None"}
         </span>
@@ -313,49 +315,86 @@ function Board(props) {
       </div>
 
       {popupVisible && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Enter Image Details</h2>
-            <input
-              type="text"
-              placeholder="Attribute 1"
-              value={imageAttributes.imageName}
-              onChange={(e) =>
-                setImageAttributes({
-                  ...imageAttributes,
-                  imageName: e.target.value,
-                })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Attribute 2"
-              value={imageAttributes.subject}
-              onChange={(e) =>
-                setImageAttributes({
-                  ...imageAttributes,
-                  subject: e.target.value,
-                })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Attribute 3"
-              value={imageAttributes.type}
-              onChange={(e) =>
-                setImageAttributes({
-                  ...imageAttributes,
-                  type: e.target.value,
-                })
-              }
-            />
-            <div className="popup-actions">
-              <button onClick={handlePopupSave}>Save</button>
-              <button onClick={handlePopupCancel}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="popup my-4 border border-gray-300 rounded-lg shadow-lg">
+    <h2 className="flex justify-center">Enter Image Details</h2>
+    <div className="flex flex-col">
+      <label htmlFor="image-name" className="mb-2 mx-2">
+        Image Name:
+      </label>
+      <input
+        type="text"
+        id="image-name"
+        placeholder="Image Name"
+        value={imageAttributes.imageName}
+        onChange={(e) =>
+          setImageAttributes({
+            ...imageAttributes,
+            imageName: e.target.value,
+          })
+        }
+        className="block border border-gray-300 rounded-lg p-2 mx-2 my-2"
+      />
+    </div>
+    <div className="flex flex-col">
+      <label htmlFor="subject" className="mb-2 mx-2">
+        Subject:
+      </label>
+      <input
+        type="text"
+        id="subject"
+        placeholder={props.classSubject}
+        value={imageAttributes.subject}
+        onChange={(e) =>
+          setImageAttributes({
+            ...imageAttributes,
+            subject: e.target.value,
+          })
+        }
+        className="block border border-gray-300 rounded-lg p-2 mx-2 my-2"
+      />
+    </div>
+    <div className="flex flex-col">
+      <label htmlFor="type" className="mb-2 mx-2">
+        Type:
+      </label>
+      <select
+  id="type"
+  value={imageAttributes.type}
+  onChange={(e) =>
+    setImageAttributes({
+      ...imageAttributes,
+      type: e.target.value,
+    })
+  }
+  className="block border border-gray-300 rounded-lg p-2 mx-2 my-2"
+>
+  <option value="Homework">Homework</option>
+  <option value="Notes">Notes</option>
+  <option value="Lecture">Lecture</option>
+  <option value="Test">Test</option>
+  <option value="Bonus">Bonus</option>
+
+</select>
+
+    </div>
+    <div className="flex justify-center my-4">
+      <button
+        className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mr-2"
+        onClick={handlePopupSave}
+      >
+        Save
+      </button>
+      <button
+        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+        onClick={handlePopupCancel}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
+
 
       <div className="flex justify-center items-center">
         <div className="mr-4">

@@ -113,7 +113,6 @@ app.post("/users", async (req, res) => {
 app.get("/teachers", async (req, res) => {
   try {
     const allTeachers = await Teacher.find({});
-    console.log(allTeachers);
     res.send({ Teachers: allTeachers });
   } catch (error) {
     console.error(error);
@@ -160,20 +159,15 @@ app.post("/saveImage2", async (req, res) => {
 
 // Route to handle saving the canvas image
 app.post("/saveImage", (req, res) => {
-  console.log("Received request to save image");
 
   const base64Data = req.body.imageData;
-  console.log("Base64 image data:", base64Data);
 
   const fileName = `canvas_${Date.now()}.png`;
-  console.log("Generated file name:", fileName);
 
   const clientPublicFolderPath = path.join(__dirname, "../client/src/SavedImages");
   const filePath = path.join(clientPublicFolderPath, fileName);
-  console.log("File path:", filePath);
 
   const data = base64Data.replace(/^data:image\/\w+;base64,/, "");
-  console.log("Trimmed image data:", data);
 
   // Check if the directory exists, and create it if necessary
   if (!fs.existsSync(clientPublicFolderPath)) {

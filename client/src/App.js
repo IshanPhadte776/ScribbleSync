@@ -44,10 +44,14 @@ function App() {
       setTeacherInfo(info);
       setIsUserLoggedIn(true);
       setUserType("teacher");
+      console.log(teacherInfo)
+
     } else if (info.FirstName) {
       setStudentInfo(info);
       setIsUserLoggedIn(true);
       setUserType("student");
+      console.log(studentInfo)
+
     }
   };
 
@@ -81,7 +85,7 @@ function App() {
       )}
       {currentPage === "AboutUsPage" && <AboutUsPage />}
       {currentPage === "RegisterPage" && <RegisterPage />}
-      {currentPage === "MySchedulePage" && <MySchedulePage />}
+      {currentPage === "MySchedulePage" && < MySchedulePage teacherInfo={teacherInfo} studentInfo={studentInfo} userType={userType}/>}
       {currentPage === "MyImagesPage" && <MyImagesPage />}
 
       <Chat> </Chat>

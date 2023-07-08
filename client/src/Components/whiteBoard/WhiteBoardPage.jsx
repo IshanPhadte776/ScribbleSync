@@ -18,7 +18,7 @@ socket.on("connect_error", (error) => {
 });
 
 function WhiteBoardPage(props) {
-  const { role, name, roomCode, setCurrentPage } = props;
+  const { role, name, roomCode, setCurrentPage,classSubject } = props;
   // Room State
   // Messages States
   const [message, setMessage] = useState("");
@@ -124,7 +124,7 @@ function WhiteBoardPage(props) {
                 role="Teacher"
                 changeColor={changeColor}
                 changeSize={changeSize}
-               
+                classSubject = {classSubject}
               />
             
           </div>

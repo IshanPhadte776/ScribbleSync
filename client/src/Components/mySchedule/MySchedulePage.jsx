@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import WhiteBoardPage from "../whiteBoard/WhiteBoardPage";
 
-function MySchedulePage(role) {
+function MySchedulePage(role,teacherInfo,studentInfo) {
   const [currentPage, setCurrentPage] = useState("MySchedulePage"); // Initial page is set to 'MySchedule'
 
   const dummyClass = {
@@ -129,15 +129,29 @@ function MySchedulePage(role) {
       }) >= currentTime
   );
 
+  let name;
+
+if (role === "student") {
+  name = studentInfo.name;
+} else if (role === "teacher") {
+  name = teacherInfo.name;
+}
+
+console.log(name)
+
   return (
     <div>
       {currentPage === "WhiteBoardPage" ? (
         <WhiteBoardPage
           role={role}
-          name={"Ishan Phadte"}
+          name={name}
+          //name={"Ishan Phadte"}
           // roomCode={currentClass.roomCode}
           roomCode={43}
           setCurrentPage={setCurrentPage}
+          //classSubject={currentClass?.title} // Pass the class name as a prop
+          classSubject={"Science"} // Pass the class name as a prop
+
         />
       ) : (
         <div>
