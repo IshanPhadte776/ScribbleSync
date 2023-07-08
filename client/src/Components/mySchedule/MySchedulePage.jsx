@@ -173,7 +173,7 @@ console.log(name)
                     .toString()
                     .padStart(2, "0")}:${minute} ${period}`;
 
-                  if (hour >= 19) {
+                  if (hour >= 19.5) {
                     return null; // Stop rendering elements beyond 7 PM
                   }
 
@@ -195,10 +195,10 @@ console.log(name)
               </div>
             </div>
 
-            <div className="col-span-10">
-              <div className="grid grid-cols-5 gap-4 mx-4 schedule-grid border border-black">
+            <div className="col-span-10 ">
+            <div className="grid grid-cols-5 gap-4 mx-4 schedule-grid ">
                 {/* Add horizontal lines */}
-                {[...Array(25)].map((_, index) => (
+                {[...Array(24)].map((_, index) => (
                   <div key={index} className="horizontal-line" />
                 ))}
 
@@ -241,7 +241,7 @@ console.log(name)
                   return (
                     <div
                       key={index}
-                      className={`class bg-customPink text-white p-2 rounded-lg mx-2  border border-black ${
+                      className={`class bg-customPink text-white p-2 rounded-lg mx-2   ${
                         classItem === currentClass ? "current-class" : ""
                       }`}
                       style={{
@@ -280,6 +280,7 @@ console.log(name)
                     </div>
                   );
                 })}
+
               </div>
             </div>
           </div>
