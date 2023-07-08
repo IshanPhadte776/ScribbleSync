@@ -245,14 +245,20 @@ function Board(props) {
 
   return (
     <div className="sketch " id="sketch">
-      <canvas
-        className={`board bg-white border border-gray-300 ${
-          isCursorOnCanvas ? "canvas-cursor" : ""
-        }`}
-        id="board"
-        ref={canvasRef}
-      ></canvas>
-      <div className="cursor-indicator" style={{ top: cursorY, left: cursorX }}>
+      <div className="canvas-container flex justify-center items-center">
+        <canvas
+          className={`board bg-white border border-gray-300 ${
+            isCursorOnCanvas ? "canvas-cursor" : ""
+          }`}
+          id="board"
+          ref={canvasRef}
+        ></canvas>
+      </div>
+
+
+
+      
+      <div className="cursor-indicator flex justify-center" style={{ top: cursorY, left: cursorX }}>
         <span>
           Now Editing: {isCursorOnCanvas ? (name ? name : "None") : "None"}
         </span>

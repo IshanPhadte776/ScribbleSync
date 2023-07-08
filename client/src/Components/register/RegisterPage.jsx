@@ -2,7 +2,7 @@ import React from "react";
 
 function RegisterPage() {
   return (
-    <div className="bg-customPink py-16">
+    <div className="bg-customPink py-16 mt-4">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
         Register
       </h1>

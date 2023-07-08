@@ -111,19 +111,20 @@ function WhiteBoardPage(props) {
       <div className="flex justify-center">
         <h1 className="text-4xl font-bold mx-6 mb-6 mt-20">Whiteboard</h1>
       </div>
-      <div className="w-full flex">
-        <div className={`w-${displayChat ? '3/4' : 'full'} flex justify-center items-center`}>
+      <div className="w-full flex justify-center items-center">
+        <div className={`w-${displayChat ? '3/4' : 'full'}`}>
           <div>
             
               <Board
                 color={color}
                 size={size}
                 name={name}
-                width={450}
+                width={400}
                 height={450}
                 role="Teacher"
                 changeColor={changeColor}
                 changeSize={changeSize}
+               
               />
             
           </div>
