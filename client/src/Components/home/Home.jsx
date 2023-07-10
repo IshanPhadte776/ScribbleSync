@@ -12,6 +12,7 @@ function Home({
   setUserType,
   setCurrentPage,
   isUserLoggedIn,
+  language
 }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isPopupDisplayed, setPopupDisplayed] = useState(false);
@@ -25,14 +26,16 @@ function Home({
   };
 
   return (
-    <div className="relative">
+    <div className="relative my-4">
       <img
         src={homeImage}
-        alt="Home Image"
+        alt="Image of Teacher learning Students over a computer"
         className="w-screen h-screen"
         onLoad={handleImageLoad}
       />
       {isImageLoaded && (
+        <section className="center-section">
+
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center mt-[-6.5rem]">
           <h1 className="text-4xl font-bold text-customRed mb-4">
             Scribble Sync
@@ -40,10 +43,13 @@ function Home({
           {!isUserLoggedIn && <button
             className="bg-customLightOrange text-lg text-white py-2 px-4 rounded hover:bg-customOrange transform hover:scale-105 transition duration-300"
             onClick={handleLogin}
+            aria-label={language === "English" ? "Get Logged In Today" : "Connectez-vous aujourd'hui"}
           >
-            Get Logged In Today
+            {language === "English" ? "Get Logged In Today" : "Connectez-vous aujourd'hui"}
           </button>}
         </div>
+        </section>
+
       )}
       {isPopupDisplayed && (
         <SignUpLoginPopup

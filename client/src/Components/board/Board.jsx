@@ -20,7 +20,7 @@ function Board(props) {
     subject: "",
     type: "",
   });
-  const { name, role, size, changeColor, changeSize, color,classSubject } = props;
+  const { name, userType, size, changeColor, changeSize, color,classSubject } = props;
 
   console.log(classSubject)
 
@@ -302,7 +302,7 @@ function Board(props) {
       </div>
 
       <div className="tools-section flex justify-center items-center my-4 ">
-        {role === "Teacher" && (
+        {userType === "Teacher" && (
           <div>
             <button className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mx-4">
               Allow Editing

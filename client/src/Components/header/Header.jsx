@@ -6,16 +6,18 @@ function Header({
   teacherInfo,
   studentInfo,
   handleNavigation,
-  onLoginSuccess,
   setIsUserLoggedIn,
   setTeacherInfo,
   setStudentInfo,
   setUserType,
   setCurrentPage,
+  language,
+  handleLanguageToggle,
 }) {
   const [isPopUpDisplayed, setDisplayPopup] = useState(false);
   const [isTransparent, setTransparent] = useState(false);
   const [isLogOutPopupDisplayed, setLogOutPopupDisplayed] = useState(false);
+
 
   const handleLoginClick = () => {
     setDisplayPopup(!isPopUpDisplayed);
@@ -56,6 +58,8 @@ function Header({
     backgroundColor: isTransparent ? "rgba(245, 158, 11, 0.6)" : "#F59E0B",
   };
 
+
+
   useEffect(() => {
     const handleScroll = () => {
       const isTop = window.scrollY === 0;
@@ -73,9 +77,16 @@ function Header({
       <div className="py-4 fixed top-0 left-0 h-16 w-full z-10" style={headerStyles}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <h1 className="text-xl font-bold">ScribbleSync</h1>
-            </div>
+          <div className="flex items-center">
+  <h1 className="text-xl font-bold mr-4">ScribbleSync</h1>
+  <button
+    className="text-lg cursor-pointer hover:text-blue-500"
+    onClick={handleLanguageToggle}
+  >
+    {language}
+  </button>
+</div>
+
 
             {isUserLoggedIn ? (
               <>
@@ -83,19 +94,20 @@ function Header({
                   className="text-lg cursor-pointer hover:text-black mr-4"
                   onClick={() => handleNavigation("HomePage")}
                 >
-                  Home
+                  {language === "English" ? "Home" : "Accueil"}
                 </h2>
+
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={() => handleNavigation("MySchedulePage")}
                 >
-                  My Schedule
+                  {language === "English" ? "My Schedule" : " Mon emploi du temps"}
                 </h2>
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={() => handleNavigation("MyImagesPage")}
                 >
-                  My Images
+                  {language === "English" ? "My Images" : "  Mes images"}
                 </h2>
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
@@ -110,25 +122,28 @@ function Header({
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={() => handleNavigation("HomePage")}
                 >
-                  Home
+                {language === "English" ? "Home" : "Accueil"}
+
                 </h2>
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={() => handleNavigation("AboutUsPage")}
                 >
-                  About Us
+                  {language === "English" ? "About Us" : "À propos de nous"}
                 </h2>
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={() => handleNavigation("RegisterPage")}
                 >
-                  Register
+                  {language === "English" ? "Register" : "S'inscrire"}
                 </h2>
+
+                
                 <h2
                   className="text-lg cursor-pointer hover:text-blue-500 mr-4"
                   onClick={handleLoginClick}
                 >
-                  Login
+                  {language === "English" ? "Login" : "Se connecter"}
                 </h2>
               </>
             )}
@@ -139,7 +154,6 @@ function Header({
       {isPopUpDisplayed && (
         <SignUpLoginPopup
           isPopUpDisplayed={true}
-          onLoginSuccess={onLoginSuccess}
           setIsUserLoggedIn={setIsUserLoggedIn}
           teacherInfo={teacherInfo}
           studentInfo={studentInfo}

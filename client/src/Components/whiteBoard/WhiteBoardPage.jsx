@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import Board from "../board/Board";
-import Container from "../container/Container";
 import io from "socket.io-client";
 import Filter from "bad-words";
 
@@ -18,7 +17,7 @@ socket.on("connect_error", (error) => {
 });
 
 function WhiteBoardPage(props) {
-  const { role, name, roomCode, setCurrentPage,classSubject } = props;
+  const { userType, name, roomCode, setCurrentPage,classSubject } = props;
   // Room State
   // Messages States
   const [message, setMessage] = useState("");
@@ -121,7 +120,7 @@ function WhiteBoardPage(props) {
                 name={name}
                 width={400}
                 height={450}
-                role="Teacher"
+                userType= {userType}
                 changeColor={changeColor}
                 changeSize={changeSize}
                 classSubject = {classSubject}

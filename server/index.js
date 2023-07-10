@@ -50,6 +50,13 @@ const teacherSchema = new mongoose.Schema({
   ClassName: String,
 });
 
+const studentSchema = new mongoose.Schema({
+  FirstName: String,
+  LastName: String,
+  Password: String,
+  ClassName: String,
+});
+
 // Define a schema for the image collection
 const imageSchema = new mongoose.Schema({
   imageData: {
@@ -82,6 +89,11 @@ const User = mongoose.model("User", userSchema);
 
 // Create a model for your user data based on the schema
 const Teacher = mongoose.model("Teacher", teacherSchema);
+
+// Create a model for your user data based on the schema
+const Student = mongoose.model("Student", studentSchema);
+
+
 // Create a model based on the schema
 const Image = mongoose.model("Image", imageSchema);
 
@@ -117,6 +129,16 @@ app.get("/teachers", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Failed to fetch teachers" });
+  }
+});
+
+app.get("/students", async (req, res) => {
+  try {
+    const allStudents = await Student.find({});
+    res.send({ Students: allStudents });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch students" });
   }
 });
 

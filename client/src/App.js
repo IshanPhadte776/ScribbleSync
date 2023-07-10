@@ -35,24 +35,16 @@ function App() {
 
   const [userType, setUserType] = useState("null");
 
-  const handleNavigation = (page) => {
-    setCurrentPage(page);
+  const [language, setLanguage] = useState("English");
+
+
+  const handleLanguageToggle = () => {
+    const newLanguage = language === "English" ? "French" : "English";
+    setLanguage(newLanguage);
   };
 
-  const handleLoginSuccess = (info) => {
-    if (info.ClassName) {
-      setTeacherInfo(info);
-      setIsUserLoggedIn(true);
-      setUserType("teacher");
-      console.log(teacherInfo)
-
-    } else if (info.FirstName) {
-      setStudentInfo(info);
-      setIsUserLoggedIn(true);
-      setUserType("student");
-      console.log(studentInfo)
-
-    }
+  const handleNavigation = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -62,25 +54,27 @@ function App() {
         teacherInfo={teacherInfo}
         studentInfo={studentInfo}
         handleNavigation={handleNavigation}
-        onLoginSuccess={handleLoginSuccess}
         setIsUserLoggedIn={setIsUserLoggedIn}
         setTeacherInfo={setTeacherInfo}
         setStudentInfo={setStudentInfo}
         setUserType={setUserType}
         setCurrentPage={setCurrentPage}
+        language={language}
+        setLanguage={setLanguage}
+        handleLanguageToggle={handleLanguageToggle}
       />
 
       {currentPage === "HomePage" && (
         <Home
           teacherInfo={teacherInfo}
           studentInfo={studentInfo}
-          onLoginSuccess={handleLoginSuccess}
           setIsUserLoggedIn={setIsUserLoggedIn}
           setTeacherInfo={setTeacherInfo}
           setStudentInfo={setStudentInfo}
           setUserType={setUserType}
           setCurrentPage={setCurrentPage}
           isUserLoggedIn = {isUserLoggedIn}
+          language={language}
         />
       )}
       {currentPage === "AboutUsPage" && <AboutUsPage />}

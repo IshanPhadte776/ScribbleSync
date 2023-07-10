@@ -3,7 +3,6 @@ import styles from "./styles.module.css";
 
 import { FaTimes, FaCheck } from "react-icons/fa";
 
-import logo from "./logo.png";
 import axios from "axios";
 
 function SignUpLoginPopup({
@@ -16,12 +15,15 @@ function SignUpLoginPopup({
   setStudentInfo,
   setUserType,
   setCurrentPage,
+  userType
 }) {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
   const [showPopup, setShowPopup] = useState(true);
   const [teachers, setTeachers] = useState([]);
+  const [students, setStudents] = useState([]);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [welcomePopup, setWelcomePopup] = useState(false);
 
@@ -29,6 +31,14 @@ function SignUpLoginPopup({
     const fetchData = async () => {
       const result = await axios.get("http://localhost:3001/teachers");
       setTeachers(Object.values(result.data)[0]);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get("http://localhost:3001/students");
+      setStudents(Object.values(result.data)[0]);
     };
     fetchData();
   }, []);
@@ -49,6 +59,7 @@ function SignUpLoginPopup({
     e.preventDefault();
 
     let loggedInTeacher = null;
+    let loggedInStudent = null;
 
     teachers.forEach(function (element) {
       if (element.Email === emailValue && element.Password === passwordValue) {
@@ -56,9 +67,29 @@ function SignUpLoginPopup({
       }
     });
 
+    students.forEach(function (element) {
+      if (
+        element.FirstName === emailValue &&
+        element.Password === passwordValue
+      ) {
+        loggedInStudent = element;
+      }
+    });
+
     if (loggedInTeacher) {
       setIsUserLoggedIn(true);
       setTeacherInfo(loggedInTeacher); // Update teacherInfo state
+      setUserType("Teacher");
+      setShowPopup(false);
+      setWelcomePopup(true);
+      setCurrentPage("MySchedulePage");
+      setTimeout(() => {
+        setWelcomePopup(false);
+      }, 3000);
+    } else if (loggedInStudent) {
+      setIsUserLoggedIn(true);
+      setStudentInfo(loggedInStudent); // Update studentInfo state
+      setUserType("Student");
       setShowPopup(false);
       setWelcomePopup(true);
       setCurrentPage("MySchedulePage");
@@ -90,7 +121,7 @@ function SignUpLoginPopup({
               <label>
                 <input
                   className={styles.input}
-                  type="email"
+                  type="text"
                   value={emailValue}
                   onChange={handleEmailChange}
                   autoComplete="email"
@@ -127,7 +158,10 @@ function SignUpLoginPopup({
                 <FaCheck />
               </div>
               <h2 className="text-2xl font-bold mb-4">
-                Welcome Back {teacherInfo.FirstName}
+                Welcome Back{" "}
+                {userType === "Teacher"
+                  ? teacherInfo.FirstName
+                  : studentInfo.FirstName}
               </h2>
             </div>
           </div>

@@ -5,8 +5,8 @@ import homeImage from "../../SavedImages/image1.png";
 import CustomDatePicker from "./CustomDatePicker";
 
 function MyImagesPage() {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
 
   const [subject, setSubject] = useState("");
   const [type, setType] = useState("");
@@ -19,7 +19,7 @@ function MyImagesPage() {
 
   const [selectedSubject, setSelectedSubject] = useState("");
 
-  const [openedCalendar, setOpenedCalendar] = useState("None");
+  //const [openedCalendar, setOpenedCalendar] = useState("None");
 
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
@@ -41,13 +41,13 @@ function MyImagesPage() {
       });
   }, []);
 
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-  };
+  // const handleStartDateChange = (date) => {
+  //   setStartDate(date);
+  // };
 
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
-  };
+  // const handleEndDateChange = (date) => {
+  //   setEndDate(date);
+  // };
 
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
@@ -56,19 +56,19 @@ function MyImagesPage() {
   const handleClearAllFilters = () => {
     setSubject("");
     setType("");
-    setStartDate(null);
-    setEndDate(null);
+    // setStartDate(null);
+    // setEndDate(null);
     setSelectedSubject("");
     setFilteredImages(images);
   };
 
-  const handleClearStartDate = () => {
-    setStartDate(null);
-  };
+  // const handleClearStartDate = () => {
+  //   setStartDate(null);
+  // };
 
-  const handleClearEndDate = () => {
-    setEndDate(null);
-  };
+  // const handleClearEndDate = () => {
+  //   setEndDate(null);
+  // };
 
   const handleSearch = () => {
     // Filter images based on selected subject and type
@@ -119,7 +119,7 @@ function MyImagesPage() {
     <div className="grid grid-cols-4 mt-20">
       <div className="col-span-1 mx-4 my-4">
         <div>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <h3 className="text-lg font-semibold mr-2">Start</h3>
 
             <button
@@ -128,14 +128,14 @@ function MyImagesPage() {
             >
               Clear
             </button>
-          </div>
-          <CustomDatePicker
+          </div> */}
+          {/* <CustomDatePicker
             selectedDate={startDate}
             handleStartDateChange={handleStartDateChange}
             thisCalender={"Start"}
-          />
+          /> */}
 
-          <div className="flex items-center mt-4">
+          {/* <div className="flex items-center mt-4">
           <h3 className="text-lg font-semibold px-1">End</h3>
 
             <button
@@ -150,7 +150,7 @@ function MyImagesPage() {
             selectedDate={endDate}
             handleEndDateChange={handleEndDateChange}
             thisCalender={"End"}
-          />
+          /> */}
 
 
           <div className="mt-4">
