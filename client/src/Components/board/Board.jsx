@@ -20,9 +20,12 @@ function Board(props) {
     subject: "",
     type: "",
   });
-  const { name, userType, size, changeColor, changeSize, color,classSubject } = props;
 
-  console.log(classSubject)
+  const [isEditingAllowed, setIsEditingAllowed] = useState(true); // Track editing permission
+
+
+  const { socket,name, userType, size, changeColor, changeSize, color,classSubject } = props;
+
 
   const [canvasWidth, setCanvasWidth] = useState(props.width);
   const [canvasHeight, setCanvasHeight] = useState(props.height);
@@ -245,6 +248,16 @@ function Board(props) {
     });
   };
 
+  function handleDisableEditingForStudents() {
+    // Make an HTTP request to the server
+    socket.emit("disableEditing", {});
+  }
+
+  function handleEnableEditingForStudents() {
+    socket.emit("enableEditing", {});
+
+  }
+
   return (
     <div className="sketch " id="sketch">
       <div className="canvas-container flex justify-center items-center">
@@ -304,10 +317,10 @@ function Board(props) {
       <div className="tools-section flex justify-center items-center my-4 ">
         {userType === "Teacher" && (
           <div>
-            <button className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mx-4">
+            <button onClick = {handleEnableEditingForStudents }className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mx-4">
               Allow Editing
             </button>
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick = {handleDisableEditingForStudents }   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Disable Editing
             </button>
           </div>

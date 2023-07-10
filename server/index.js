@@ -222,6 +222,9 @@ app.get("/images", async (req, res) => {
 // Socket.io connection handling
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+
+  let isEditingAllowed = true; // Variable to track editing permission
+
   
   socket.on("join_room", (data) => {
     socket.join(data);
@@ -237,11 +240,28 @@ io.on("connection", (socket) => {
   });
 
   socket.on("canvas-data", (data) => {
-    socket.broadcast.emit("canvas-data", data);
+    if (isEditingAllowed) {
+      socket.broadcast.emit("canvas-data", data);
+    }
   });
 
   socket.on("erase-board", () => {
     socket.broadcast.emit("erase-board");
+  });
+
+  socket.on("enableEditing", () => {
+    isEditingAllowed = true;
+
+    socket.broadcast.emit("editingAllowed");
+    // io.to(socket.id).emit("editing_allowed"); // Send "editing_allowed" event only to the current socket
+    // socket.broadcast.emit("update_editing_permission", { allowed: true }); // Broadcast the updated editing permission to other users
+  });
+
+  socket.on("disableEditing", () => {
+    isEditingAllowed = false;
+
+    socket.broadcast.emit("editingDisallowed");
+
   });
 
   socket.on("disconnect", () => {

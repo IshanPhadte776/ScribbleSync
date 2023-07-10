@@ -16,8 +16,8 @@ function MySchedulePage({userType,teacherInfo,studentInfo}) {
   const classes = [
     {
       day: "Monday",
-      startTime: new Date(0, 0, 0, 9, 0), // 9:00 AM
-      endTime: new Date(0, 0, 0, 10, 0), // 10:00 AM
+      startTime: new Date(0, 0, 0, 14, 0), // 9:00 AM
+      endTime: new Date(0, 0, 0, 16, 0), // 10:00 AM
       duration: 1,
       title: "Math",
       roomCode: 21,
@@ -144,7 +144,7 @@ if (userType === "Student") {
         <WhiteBoardPage
         userType={userType}
           name={name}
-          // roomCode={currentClass.roomCode}
+           //roomCode={currentClass.roomCode}
           roomCode={43}
           setCurrentPage={setCurrentPage}
           //classSubject={currentClass?.title} // Pass the class name as a prop

@@ -16,12 +16,23 @@ socket.on("connect_error", (error) => {
   console.log("Socket connection failed:", error);
 });
 
+socket.on("editingAllowed", () => {
+  console.log("Editing Allowed")
+});
+
+socket.on("editingDisallowed", () => {
+  console.log("No Editing Allowed")
+});
+
 function WhiteBoardPage(props) {
   const { userType, name, roomCode, setCurrentPage,classSubject } = props;
   // Room State
   // Messages States
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  console.log(roomCode)
+  console.log(classSubject)
 
   socket.on("disconnect", () => {
     console.log("Socket disconnected");
@@ -115,6 +126,7 @@ function WhiteBoardPage(props) {
           <div>
             
               <Board
+                socket={socket} // Pass the 'socket' object as a prop
                 color={color}
                 size={size}
                 name={name}
