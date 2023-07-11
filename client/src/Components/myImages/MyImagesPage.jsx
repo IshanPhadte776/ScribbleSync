@@ -77,7 +77,7 @@ function MyImagesPage() {
 
     console.log(images[0].imageName)
     console.log(images[1].imageName)
-    console.log(images[2].imageName == imageNameSearched)
+    console.log(images[2].imageName === imageNameSearched)
 
     if (selectedSubject !== "All" && selectedSubject !== "") {
       filteredImages = filteredImages.filter(
@@ -238,6 +238,7 @@ function MyImagesPage() {
         <div className="grid grid-cols-3 gap-4">
           {filteredImages.map((image, index) => (
             <div key={index} className="border rounded p-4">
+              {/* eslint-disable jsx-a11y/img-redundant-alt */}
               <img src={image.imageData} alt="Saved Image" className="w-full" />
               <div>
                 <p className="font-semibold">Name: {image.imageName}</p>

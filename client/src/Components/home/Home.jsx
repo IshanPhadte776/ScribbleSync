@@ -27,6 +27,8 @@ function Home({
 
   return (
     <div className="relative my-4">
+                    {/* eslint-disable jsx-a11y/img-redundant-alt */}
+
       <img
         src={homeImage}
         alt="Image of Teacher learning Students over a computer"

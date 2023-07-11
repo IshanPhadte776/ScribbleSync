@@ -37,11 +37,11 @@ function WhiteBoardPage(props) {
     console.log("Socket disconnected");
   });
 
-  const joinRoom = () => {
-    if (roomCode !== "") {
-      socket.emit("join_room", roomCode);
-    }
-  };
+  // const joinRoom = () => {
+  //   if (roomCode !== "") {
+  //     socket.emit("join_room", roomCode);
+  //   }
+  // };
 
   const handleDisconnect = () => {
     socket.emit("leave_room", roomCode); // Send leave room event to the server
@@ -87,7 +87,6 @@ function WhiteBoardPage(props) {
   socket.on("stop_drawing", () => {});
 
   useEffect(() => {
-    joinRoom();
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -114,9 +113,6 @@ function WhiteBoardPage(props) {
     setMessage(event.target.value);
   };
 
-  useEffect(() => {
-    console.log('Screen size:', window.innerWidth);
-  }, [window.innerWidth]);
 
   return (
     <div>

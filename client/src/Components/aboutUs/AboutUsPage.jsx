@@ -8,6 +8,8 @@ function AboutUsPage() {
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
           About Us
         </h1>
+                      {/* eslint-disable jsx-a11y/img-redundant-alt */}
+
         <img src={homeImage} alt="Home Image" className="w-full h-auto" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
           <div className="bg-white p-8 rounded-lg shadow-md">

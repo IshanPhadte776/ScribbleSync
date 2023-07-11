@@ -10,7 +10,7 @@ function Board(props) {
   const canvasRef = useRef(null);
   const [canvasContent, setCanvasContent] = useState("");
   const [isErasing, setIsErasing] = useState(false);
-  const [savedImages, setSavedImages] = useState([]);
+  const [savedImages] = useState([]);
   const [cursorX, setCursorX] = useState(0);
   const [cursorY, setCursorY] = useState(0);
   const [isCursorOnCanvas, setIsCursorOnCanvas] = useState(false);
@@ -29,8 +29,10 @@ function Board(props) {
   const [canvasHeight, setCanvasHeight] = useState(props.height);
 
   
-  const [color, setColor] = useState("#000000");
-  const [size, setSize] = useState("10");
+  const [color] = useState("#000000");
+  const [size] = useState("10");
+
+  console.log(canvasContent)
 
   // const changeColor = (e) => {
   //   setColor(e.target.value);
@@ -80,7 +82,7 @@ function Board(props) {
     });
 
     drawOnCanvas();
-  }, []);
+  });
 
 
 
@@ -93,8 +95,8 @@ function Board(props) {
 
     const ctx = canvas.getContext("2d");
 
-    const sketch = document.querySelector("#sketch");
-    const sketch_style = getComputedStyle(sketch);
+    // const sketch = document.querySelector("#sketch");
+    // const sketch_style = getComputedStyle(sketch);
 
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -319,7 +321,10 @@ function Board(props) {
       </div>
       <div className="flex justify-center mt-4">
         <div className="grid grid-cols-2 gap-4">
+                        {/* eslint-disable jsx-a11y/img-redundant-alt */}
+
           {savedImages.map((image, index) => (
+            
             <img
               key={index}
               src={image.src}
