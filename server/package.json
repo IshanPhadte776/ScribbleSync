@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm install && echo 'Build complete'"
+    "build": "echo 'Build complete'"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,4 @@
   "devDependencies": {
     "nodemon": "^2.0.22"
   }
-
-
 }
