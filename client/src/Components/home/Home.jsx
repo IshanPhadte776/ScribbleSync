@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import homeImage from "./background.jpg";
+import homeImage from "./whiteboard.png";
 import SignUpLoginPopup from "../signUpLoginPopup/SignUpLoginPopup";
 
 function Home({
@@ -36,8 +36,8 @@ function Home({
       {isImageLoaded && (
         <section className="center-section">
 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center mt-[-6.5rem]">
-          <h1 className="text-4xl font-bold text-customRed mb-4">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center ">
+          <h1 className="text-4xl font-bold text-black-500 mb-4">
             Scribble Sync
           </h1>
           {!isUserLoggedIn && <button

@@ -15,7 +15,7 @@ function SignUpLoginPopup({
   setStudentInfo,
   setUserType,
   setCurrentPage,
-  userType
+  userType,
 }) {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -29,17 +29,47 @@ function SignUpLoginPopup({
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get("http://localhost:3001/teachers");
-      setTeachers(Object.values(result.data)[0]);
+      try {
+        const result = await axios.get("http://localhost:3001/teachers");
+        const teachersData = Object.values(result.data)[0];
+
+        if (teachersData.length === 0) {
+          setErrorMessage("No teachers found");
+        } else {
+          setErrorMessage("");
+          setTeachers(teachersData);
+        }
+      } catch (error) {
+        setErrorMessage(
+          "Teachers need a break, couldn't get Teachers in the Database"
+        );
+        console.error("Failed to Fetch teacher data:", error);
+      }
     };
+
     fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get("http://localhost:3001/students");
-      setStudents(Object.values(result.data)[0]);
+      try {
+        const result = await axios.get("http://localhost:3001/students");
+        const studentsData = Object.values(result.data)[0];
+
+        if (studentsData.length === 0) {
+          setErrorMessage("No students found");
+        } else {
+          setErrorMessage("");
+          setStudents(studentsData);
+        }
+      } catch (error) {
+        setErrorMessage(
+          "Students are out for recess, couldn't get Students in the Database"
+        );
+        console.error("Failed to fetch student data:", error);
+      }
     };
+
     fetchData();
   }, []);
 
@@ -114,7 +144,8 @@ function SignUpLoginPopup({
             <h2 className={styles.subHeading}>Education. Learning. Fun.</h2>
 
             <h2 className={styles.subHeading}>
-              Provide your email and password to login
+              Provide your email (Teachers) or first name (students) and
+              password to login
             </h2>
 
             <form className={styles.emailForm} onSubmit={handleSubmit}>
@@ -125,7 +156,8 @@ function SignUpLoginPopup({
                   value={emailValue}
                   onChange={handleEmailChange}
                   autoComplete="email"
-                  placeholder="Email"
+                  placeholder="First Name or Email"
+                  required // Add the 'required' attribute to enforce non-empty value
                 />
               </label>
 
@@ -137,6 +169,7 @@ function SignUpLoginPopup({
                   onChange={handlePasswordChange}
                   autoComplete="password"
                   placeholder="Password"
+                  required // Add the 'required' attribute to enforce non-empty value
                 />
               </label>
 

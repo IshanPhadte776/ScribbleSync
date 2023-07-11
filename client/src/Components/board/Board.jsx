@@ -21,14 +21,26 @@ function Board(props) {
     type: "",
   });
 
-  const [isEditingAllowed, setIsEditingAllowed] = useState(true); // Track editing permission
 
-
-  const { socket,name, userType, size, changeColor, changeSize, color,classSubject } = props;
+  const {name, userType } = props;
 
 
   const [canvasWidth, setCanvasWidth] = useState(props.width);
   const [canvasHeight, setCanvasHeight] = useState(props.height);
+
+  
+  const [color, setColor] = useState("#000000");
+  const [size, setSize] = useState("10");
+
+  // const changeColor = (e) => {
+  //   setColor(e.target.value);
+  //   console.log(color);
+  // };
+
+  // const changeSize = (e) => {
+  //   setSize(e.target.value);
+  //   console.log(size);
+  // };
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:3001");
@@ -70,8 +82,15 @@ function Board(props) {
     drawOnCanvas();
   }, []);
 
+
+
   const drawOnCanvas = () => {
     const canvas = canvasRef.current;
+
+    if (!canvas) {
+      return; // Exit the function if the canvas ref is null
+    }
+
     const ctx = canvas.getContext("2d");
 
     const sketch = document.querySelector("#sketch");
@@ -105,10 +124,11 @@ function Board(props) {
       false
     );
 
-    ctx.lineWidth = props.size;
+    ctx.lineWidth = size;
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
-    ctx.strokeStyle = isErasing ? "white" : props.color;
+    ctx.strokeStyle = isErasing ? "white" : color;
+
 
     canvas.addEventListener(
       "mousedown",
@@ -127,11 +147,13 @@ function Board(props) {
     );
 
     const onPaint = () => {
-      ctx.beginPath();
-      ctx.moveTo(last_mouse.x, last_mouse.y);
-      ctx.lineTo(mouse.x, mouse.y);
-      ctx.closePath();
-      ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(last_mouse.x, last_mouse.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.closePath();
+        ctx.stroke();
+
     };
   };
 
@@ -248,15 +270,6 @@ function Board(props) {
     });
   };
 
-  function handleDisableEditingForStudents() {
-    // Make an HTTP request to the server
-    socket.emit("disableEditing", {});
-  }
-
-  function handleEnableEditingForStudents() {
-    socket.emit("enableEditing", {});
-
-  }
 
   return (
     <div className="sketch " id="sketch">
@@ -286,12 +299,15 @@ function Board(props) {
         >
           Clear Board
         </button>
-        <button
-          className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded"
-          onClick={handleSaveImage}
-        >
-          Save Image
-        </button>
+        {userType === "Teacher" && (
+            <button
+              className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded"
+              onClick={handleSaveImage}
+            >
+              Save Image
+            </button>
+          )}
+
         <button
           className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ${
             isErasing ? "bg-gray-500" : ""
@@ -314,7 +330,7 @@ function Board(props) {
         </div>
       </div>
 
-      <div className="tools-section flex justify-center items-center my-4 ">
+      {/* <div className="tools-section flex justify-center items-center my-4 ">
         {userType === "Teacher" && (
           <div>
             <button onClick = {handleEnableEditingForStudents }className="bg-customLightOrange hover:bg-customOrange text-white font-bold py-2 px-4 rounded mx-4">
@@ -325,7 +341,7 @@ function Board(props) {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
 
       {popupVisible && (
   <div className="popup my-4 border border-gray-300 rounded-lg shadow-lg">
@@ -409,7 +425,7 @@ function Board(props) {
 
 
 
-      <div className="flex justify-center items-center">
+      {/* <div className="flex justify-center items-center">
         <div className="mr-4">
           <label htmlFor="brush-size" className="mr-2">
             Select Brush Size:
@@ -437,7 +453,7 @@ function Board(props) {
             className="w-10 h-10"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import MySchedulePage from "./Components/mySchedule/MySchedulePage";
 import MyImagesPage from "./Components/myImages/MyImagesPage";
 import Home from "./Components/home/Home";
 
+
 function App() {
   const [currentPage, setCurrentPage] = useState("HomePage");
 
@@ -83,6 +84,8 @@ function App() {
       {currentPage === "MyImagesPage" && <MyImagesPage />}
 
       <Chat> </Chat>
+
+
     </div>
   );
 }

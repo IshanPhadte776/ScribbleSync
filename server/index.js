@@ -249,20 +249,20 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("erase-board");
   });
 
-  socket.on("enableEditing", () => {
-    isEditingAllowed = true;
+  // socket.on("enableEditing", () => {
+  //   isEditingAllowed = true;
 
-    socket.broadcast.emit("editingAllowed");
-    // io.to(socket.id).emit("editing_allowed"); // Send "editing_allowed" event only to the current socket
-    // socket.broadcast.emit("update_editing_permission", { allowed: true }); // Broadcast the updated editing permission to other users
-  });
+  //   socket.broadcast.emit("editingAllowed");
+  //   // io.to(socket.id).emit("editing_allowed"); // Send "editing_allowed" event only to the current socket
+  //   // socket.broadcast.emit("update_editing_permission", { allowed: true }); // Broadcast the updated editing permission to other users
+  // });
 
-  socket.on("disableEditing", () => {
-    isEditingAllowed = false;
+  // socket.on("disableEditing", () => {
+  //   isEditingAllowed = false;
 
-    socket.broadcast.emit("editingDisallowed");
+  //   socket.broadcast.emit("editingDisallowed");
 
-  });
+  // });
 
   socket.on("disconnect", () => {
     console.log(`User Disconnected: ${socket.id}`);

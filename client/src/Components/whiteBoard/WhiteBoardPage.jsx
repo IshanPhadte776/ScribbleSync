@@ -16,13 +16,9 @@ socket.on("connect_error", (error) => {
   console.log("Socket connection failed:", error);
 });
 
-socket.on("editingAllowed", () => {
-  console.log("Editing Allowed")
-});
 
-socket.on("editingDisallowed", () => {
-  console.log("No Editing Allowed")
-});
+
+
 
 function WhiteBoardPage(props) {
   const { userType, name, roomCode, setCurrentPage,classSubject } = props;
@@ -30,6 +26,9 @@ function WhiteBoardPage(props) {
   // Messages States
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  //const [isEdittingAllowed, setIsEdittingAllowed] = useState(true);
+
 
   console.log(roomCode)
   console.log(classSubject)
@@ -75,6 +74,16 @@ function WhiteBoardPage(props) {
     console.log(data.username);
   });
 
+  // socket.on("editingAllowed", () => {
+  //   console.log("Editing Allowed")
+  //   setIsEdittingAllowed(true);
+  // });
+  
+  // socket.on("editingDisallowed", () => {
+  //   console.log("No Editing Allowed")
+  //   setIsEdittingAllowed(false);
+  // });
+
   socket.on("stop_drawing", () => {});
 
   useEffect(() => {
@@ -95,18 +104,11 @@ function WhiteBoardPage(props) {
     };
   }, []);
 
-  const [color, setColor] = useState("#000000");
-  const [size, setSize] = useState("10");
+
 
   const [displayChat, setDisplayChat] = useState(false);
 
-  const changeColor = (e) => {
-    setColor(e.target.value);
-  };
 
-  const changeSize = (e) => {
-    setSize(e.target.value);
-  };
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);
@@ -126,15 +128,10 @@ function WhiteBoardPage(props) {
           <div>
             
               <Board
-                socket={socket} // Pass the 'socket' object as a prop
-                color={color}
-                size={size}
                 name={name}
                 width={400}
                 height={450}
                 userType= {userType}
-                changeColor={changeColor}
-                changeSize={changeSize}
                 classSubject = {classSubject}
               />
             
