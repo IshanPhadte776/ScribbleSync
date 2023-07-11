@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
 import Select from "react-select";
-import homeImage from "../../SavedImages/image1.png";
-import CustomDatePicker from "./CustomDatePicker";
+
 
 function MyImagesPage() {
   // const [startDate, setStartDate] = useState(null);
   // const [endDate, setEndDate] = useState(null);
 
   const [subject, setSubject] = useState("");
+  console.log(subject)
   const [type, setType] = useState("");
   const [imageNameSearched, setImageNameSearched] = useState("");
 

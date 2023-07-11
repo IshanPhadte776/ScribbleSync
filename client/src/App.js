@@ -1,8 +1,7 @@
 // import "./App.css";
 import "./styles/tailwind.css";
 
-import io from "socket.io-client";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import Header from "./Components/header/Header";
 import Chat from "./Components/Chat";
 import RegisterPage from "./Components/register/RegisterPage";
