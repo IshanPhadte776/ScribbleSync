@@ -30,7 +30,7 @@ function SignUpLoginPopup({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/teachers");
+        const result = await axios.get("https://whiteboard-application-final.onrender.com/teachers");
         const teachersData = Object.values(result.data)[0];
 
         if (teachersData.length === 0) {
@@ -53,7 +53,7 @@ function SignUpLoginPopup({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/students");
+        const result = await axios.get("https://whiteboard-application-final.onrender.com/students");
         const studentsData = Object.values(result.data)[0];
 
         if (studentsData.length === 0) {

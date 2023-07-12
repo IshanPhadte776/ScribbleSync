@@ -45,7 +45,7 @@ function Board(props) {
   // };
 
   useEffect(() => {
-    socketRef.current = io.connect("http://localhost:3001");
+    socketRef.current = io.connect("https://whiteboard-application-final.onrender.com/");
 
     socketRef.current.on("connect", () => {
       console.log("Socket connection successful in board");

@@ -6,7 +6,7 @@ import Filter from "bad-words";
 
 const filter = new Filter(); // Create an instance of the bad-words filter
 
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect("https://whiteboard-application-final.onrender.com/");
 
 socket.on("connect", () => {
   console.log("Socket connection successful in app");

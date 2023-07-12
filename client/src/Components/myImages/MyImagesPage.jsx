@@ -26,7 +26,7 @@ function MyImagesPage() {
 
   useEffect(() => {
     // Fetch all images
-    fetch("http://localhost:3001/images")
+    fetch("https://whiteboard-application-final.onrender.com/images")
       .then((response) => response.json())
       .then((data) => {
         if (data.images) {
