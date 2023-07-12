@@ -14,10 +14,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
+    origin: [
+      "https://main--luminous-strudel-441a46.netlify.app",
+      "http://localhost:3000",
+      "http://localhost:3002"
+    ],
+    methods: ["GET", "POST"]
+  }
 });
+
 
 // Middleware
 app.use(cors());
