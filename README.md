@@ -12,10 +12,10 @@ Classes are set at various times of the day and week. When a class is scheduled,
 
 Users can draw on the whiteboard as well as change the color and stroke size of the marker
 The content on the whiteboard will update on the screens of others in real-time 
-<img width="296" alt="image" src="https://github.com/IshanPhadte776/ChatBot/assets/86078773/867ee4e8-3b4e-4735-a9a0-5fddda39ccc1">
+<img width="346" alt="image" src="https://github.com/IshanPhadte776/ChatBot/assets/86078773/123ce64c-f205-4db6-9dbd-f1d9a52451b0">
 
 
 There's also a real-time chat feature for sending messages via Socket.io 
-<img width="156" alt="image" src="https://github.com/IshanPhadte776/ChatBot/assets/86078773/b490501d-653b-4869-bbf2-4db8aae3d9f4">
+<img width="254" alt="image" src="https://github.com/IshanPhadte776/ChatBot/assets/86078773/ee355e3b-5285-4299-b278-12cb790da274">
 
 Images can be saved and retrieved from the MongoDB
